@@ -25,7 +25,7 @@ module.exports = {
     react: { version: 'detect' },
     'import/resolver': {
       node: {
-        paths: [path.resolve(__dirname, '')],
+        paths: [path.resolve(__dirname)],
         extensions: ['.js', '.jsx', '.ts', '.tsx']
       },
       alias: {
