@@ -29,8 +29,11 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx']
       },
       alias: {
-        map: [['', './public']],
-        extensions: ['.js', '.jsx']
+        map: [
+          ['', './public'],
+          ['@', path.resolve(__dirname, 'src')]
+        ],
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
       }
     }
   },

@@ -1,6 +1,11 @@
+import { registerAccount } from '@/apis/auth.api';
 import Input from '@/components/Input';
-import { RegisterShemaValidation, schemaValidation } from '@/utils/rules';
+import { ReponseApi } from '@/types/utils.type';
+import { LoginShemaValidation, RegisterShemaValidation, schemaValidation } from '@/utils/rules';
+import { isAxiosUnprocessableEntity } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import { omit } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
@@ -8,20 +13,37 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm<RegisterShemaValidation>({
     resolver: yupResolver(schemaValidation)
   });
 
-  const onsubmit = handleSubmit(
-    (data) => {
-      console.log(data);
-    },
-    (data) => {}
-  );
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<RegisterShemaValidation, 'confirm_password'>) => registerAccount(body)
+  });
 
-  // const password = watch('password');
-  // console.log(password);
+  const onsubmit = handleSubmit((data) => {
+    const body = omit(data, 'confirm_password');
+    registerAccountMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntity<ReponseApi<LoginShemaValidation>>(error)) {
+          const formErorr = error.response?.data.data;
+          if (formErorr) {
+            Object.entries(formErorr).forEach(([key, value]) => {
+              setError(key as keyof LoginShemaValidation, {
+                message: value,
+                type: 'Server'
+              });
+            });
+          }
+        }
+      }
+    });
+  });
 
   return (
     <div className='bg-orange'>
