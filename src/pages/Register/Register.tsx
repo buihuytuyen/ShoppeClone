@@ -1,23 +1,17 @@
 import Input from '@/components/Input';
-import { getRules } from '@/utils/rules';
+import { RegisterShemaValidation, schemaValidation } from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-export interface FormData {
-  email: string;
-  password: string;
-  confirm_password: string;
-}
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    watch,
-    getValues,
     formState: { errors }
-  } = useForm<FormData>();
-
-  const rules = getRules(getValues);
+  } = useForm<RegisterShemaValidation>({
+    resolver: yupResolver(schemaValidation)
+  });
 
   const onsubmit = handleSubmit(
     (data) => {
@@ -36,34 +30,31 @@ export default function Register() {
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='p-10 rounded bg-white shadow-sm' noValidate onSubmit={onsubmit}>
               <div className='text=2xl'>Đăng ký</div>
-              <Input<FormData>
+              <Input<RegisterShemaValidation>
                 name='email'
                 register={register}
                 type='email'
                 className='mt-8'
                 errorMessage={errors.email?.message}
                 placeholder='Email'
-                rules={rules.email}
               />
-              <Input<FormData>
+              <Input<RegisterShemaValidation>
                 name='password'
                 register={register}
                 type='password'
                 className='mt-3'
                 errorMessage={errors.password?.message}
                 placeholder='Password'
-                rules={rules.password}
                 autoComplete='on'
               />
 
-              <Input<FormData>
+              <Input<RegisterShemaValidation>
                 name='confirm_password'
                 register={register}
                 type='password'
                 className='mt-3'
                 errorMessage={errors.confirm_password?.message}
                 placeholder='Confirm Password'
-                rules={rules.confirm_password}
                 autoComplete='on'
               />
 
