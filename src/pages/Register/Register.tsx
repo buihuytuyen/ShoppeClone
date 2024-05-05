@@ -1,7 +1,7 @@
 import { registerAccount } from '@/apis/auth.api';
 import Input from '@/components/Input';
 import { ReponseApi } from '@/types/utils.type';
-import { LoginShemaValidation, RegisterShemaValidation, schemaValidation } from '@/utils/rules';
+import { LoginShemaValidation, registerShemaValidation, RegisterShemaValidation } from '@/utils/rules';
 import { isAxiosUnprocessableEntity } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ export default function Register() {
     setError,
     formState: { errors }
   } = useForm<RegisterShemaValidation>({
-    resolver: yupResolver(schemaValidation)
+    resolver: yupResolver(registerShemaValidation)
   });
 
   const registerAccountMutation = useMutation({
@@ -69,7 +69,6 @@ export default function Register() {
                 placeholder='Password'
                 autoComplete='on'
               />
-
               <Input<RegisterShemaValidation>
                 name='confirm_password'
                 register={register}
