@@ -11,6 +11,9 @@ module.exports = {
     extend: {
       colors: {
         orange: '#ee4d2d'
+      },
+      backgroundImage: {
+        'header-gradient': 'linear-gradient(-180deg, #f53d2d, #f63)'
       }
     }
   },

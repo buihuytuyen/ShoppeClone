@@ -1,47 +1,81 @@
 import {
+  arrow,
   autoUpdate,
   flip,
+  FloatingArrow,
   FloatingFocusManager,
   offset,
   shift,
   useClick,
   useDismiss,
   useFloating,
-  useFocus,
   useHover,
   useInteractions,
-  useRole
+  useRole,
+  useTransitionStyles
 } from '@floating-ui/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+const ARROW_WIDTH = 20;
+const ARROW_HEIGHT = 10;
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const arrowRef = useRef(null);
+
+  const { refs, floatingStyles, context, middlewareData } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(10), flip(), shift()],
+    middleware: [
+      offset(ARROW_HEIGHT),
+      flip({ fallbackAxisSideDirection: 'end', padding: 5 }),
+      shift({ padding: 5 }),
+      arrow({ element: arrowRef })
+    ],
     whileElementsMounted: autoUpdate
   });
 
   const click = useClick(context);
-  const hover = useHover(context);
-  const focus = useFocus(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
 
   // Merge all the interactions into prop getters
-  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss, role, hover, focus]);
+  const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss, role]);
+
+  const arrowX = middlewareData.arrow?.x ?? 0;
+  const arrowY = middlewareData.arrow?.y ?? 0;
+  const transformX = arrowX + ARROW_WIDTH / 2;
+  const transformY = arrowY + ARROW_HEIGHT;
+
+  const { isMounted, styles } = useTransitionStyles(context, {
+    initial: {
+      transform: 'scale(0.8)',
+      opacity: 0
+    },
+    duration: {
+      open: 200,
+      close: 100
+    },
+    common: ({ side }) => ({
+      transformOrigin: {
+        top: `${transformX}px calc(100% + ${ARROW_HEIGHT}px)`,
+        bottom: `${transformX}px ${-ARROW_HEIGHT}px`,
+        left: `calc(100% + ${ARROW_HEIGHT}px) ${transformY}px`,
+        right: `${-ARROW_HEIGHT}px ${transformY}px`
+      }[side]
+    })
+  });
 
   return (
-    <div className='pb-5 pt-2 bg-[#f63] text-white'>
+    <div className='pb-5 pt-2 bg-header-gradient text-white'>
       <div className='container'>
         <div className='flex justify-end'>
           <div
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer mr-6'
             ref={refs.setReference}
             {...getReferenceProps()}
-            className='flex items-center py-1 hover:text-gray-300 cursor-pointer mr-6'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -68,14 +102,30 @@ export default function Header() {
             >
               <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
             </svg>
+            {isMounted && (
+              <FloatingFocusManager context={context} modal={false} closeOnFocusOut={false}>
+                <div
+                  ref={refs.setFloating}
+                  style={floatingStyles}
+                  {...getFloatingProps()}
+                  className='z-10 focus:outline-none'
+                >
+                  <div className='bg-white text-black border-none rounded-sm shadow-lg w-40 py-2' style={styles}>
+                    <div className='p-2 cursor-pointer hover:text-orange rounded-sm'>Tiếng Việt</div>
+                    <div className='p-2 cursor-pointer hover:text-orange rounded-sm'>Tiếng Anh</div>
+                    <FloatingArrow
+                      ref={arrowRef}
+                      context={context}
+                      style={{ transform: 'translateY(-1px)' }}
+                      className='fill-white [&>path:first-of-type]:stroke-pink-500 [&>path:last-of-type]:stroke-white'
+                      height={ARROW_HEIGHT}
+                      width={ARROW_WIDTH}
+                    />
+                  </div>
+                </div>
+              </FloatingFocusManager>
+            )}
           </div>
-          {isOpen && (
-            <FloatingFocusManager context={context} modal={false}>
-              <div ref={refs.setFloating} style={floatingStyles} {...getFloatingProps()}>
-                Popover element
-              </div>
-            </FloatingFocusManager>
-          )}
 
           <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer'>
             <div className='w-6 h-6 mr-2 flex-shrink-0'>
