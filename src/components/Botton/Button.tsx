@@ -9,7 +9,7 @@ export default function Button(props: ButtonProps) {
   const { isLoading, disabled, children, className, ...rest } = props;
   return (
     <button
-      className={classNames('flex justify-center items-center', className, {
+      className={classNames('w-full flex justify-center items-center', className, {
         'cursor-not-allowed': disabled || isLoading
       })}
       disabled={disabled || isLoading}
