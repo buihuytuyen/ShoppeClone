@@ -1,13 +1,15 @@
 import { registerAccount } from '@/apis/auth.api';
 import Input from '@/components/Input';
-import { ReponseApi } from '@/types/utils.type';
+import { AppContext } from '@/contexts/app.context';
+import { ErrorReponse } from '@/types/utils.type';
 import { LoginShemaValidation, registerShemaValidation, RegisterShemaValidation } from '@/utils/rules';
 import { isAxiosUnprocessableEntity } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { omit } from 'lodash';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const {
@@ -18,6 +20,8 @@ export default function Register() {
   } = useForm<RegisterShemaValidation>({
     resolver: yupResolver(registerShemaValidation)
   });
+  const { setIsAuthenticated } = useContext(AppContext);
+  const navagate = useNavigate();
 
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<RegisterShemaValidation, 'confirm_password'>) => registerAccount(body)
@@ -26,11 +30,12 @@ export default function Register() {
   const onsubmit = handleSubmit((data) => {
     const body = omit(data, 'confirm_password');
     registerAccountMutation.mutate(body, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: (_) => {
+        setIsAuthenticated(true);
+        navagate('/');
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ReponseApi<LoginShemaValidation>>(error)) {
+        if (isAxiosUnprocessableEntity<ErrorReponse<LoginShemaValidation>>(error)) {
           const formErorr = error.response?.data.data;
           if (formErorr) {
             Object.entries(formErorr).forEach(([key, value]) => {

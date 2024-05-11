@@ -1,12 +1,14 @@
 import { login } from '@/apis/auth.api';
 import Input from '@/components/Input';
-import { ReponseApi } from '@/types/utils.type';
+import { AppContext } from '@/contexts/app.context';
+import { ErrorReponse } from '@/types/utils.type';
 import { loginShemaValidation, LoginShemaValidation } from '@/utils/rules';
 import { isAxiosUnprocessableEntity } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const {
@@ -18,17 +20,21 @@ export default function Login() {
     resolver: yupResolver(loginShemaValidation)
   });
 
+  const { setIsAuthenticated } = useContext(AppContext);
+  const navagate = useNavigate();
+
   const loginMutation = useMutation({
     mutationFn: (body: LoginShemaValidation) => login(body)
   });
 
   const onsubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: (_) => {
+        setIsAuthenticated(true);
+        navagate('/');
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ReponseApi<LoginShemaValidation>>(error)) {
+        if (isAxiosUnprocessableEntity<ErrorReponse<LoginShemaValidation>>(error)) {
           const formErorr = error.response?.data.data;
           if (formErorr) {
             Object.entries(formErorr).forEach(([key, value]) => {
