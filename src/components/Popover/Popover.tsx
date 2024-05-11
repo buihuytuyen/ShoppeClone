@@ -6,6 +6,7 @@ import {
   FloatingFocusManager,
   FloatingPortal,
   offset,
+  Placement,
   shift,
   useClick,
   useDismiss,
@@ -21,12 +22,14 @@ interface Props {
   render: ReactNode;
 
   className?: string;
+
+  placment?: Placement;
 }
 
 const ARROW_WIDTH = 20;
 const ARROW_HEIGHT = 10;
 
-export default function Popover({ children, render, className }: Props) {
+export default function Popover({ children, render, className, placment = 'bottom-end' }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const arrowRef = useRef(null);
@@ -35,7 +38,8 @@ export default function Popover({ children, render, className }: Props) {
     open: isOpen,
     onOpenChange: setIsOpen,
     middleware: [offset(ARROW_HEIGHT - 5), flip(), shift(), arrow({ element: arrowRef })],
-    whileElementsMounted: autoUpdate
+    whileElementsMounted: autoUpdate,
+    placement: placment
   });
 
   const click = useClick(context);
@@ -83,7 +87,7 @@ export default function Popover({ children, render, className }: Props) {
               {...getFloatingProps()}
               className='z-10 focus:outline-none'
             >
-              <div className='bg-white text-black border-none rounded-sm shadow-lg w-40' style={styles}>
+              <div className='bg-white text-black border-none rounded-sm shadow-lg min-w-40 h-auto' style={styles}>
                 {render}
                 <FloatingArrow
                   ref={arrowRef}
