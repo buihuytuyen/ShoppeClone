@@ -1,5 +1,7 @@
 import { login } from '@/apis/auth.api';
+import Button from '@/components/Botton';
 import Input from '@/components/Input';
+import UrlPath from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
 import { ErrorReponse } from '@/types/utils.type';
 import { loginShemaValidation, LoginShemaValidation } from '@/utils/rules';
@@ -20,7 +22,7 @@ export default function Login() {
     resolver: yupResolver(loginShemaValidation)
   });
 
-  const { setIsAuthenticated } = useContext(AppContext);
+  const { setIsAuthenticated, setProfile } = useContext(AppContext);
   const navagate = useNavigate();
 
   const loginMutation = useMutation({
@@ -29,8 +31,9 @@ export default function Login() {
 
   const onsubmit = handleSubmit((data) => {
     loginMutation.mutate(data, {
-      onSuccess: (_) => {
+      onSuccess: (data) => {
         setIsAuthenticated(true);
+        setProfile(data.data.data.user);
         navagate('/');
       },
       onError: (error) => {
@@ -74,16 +77,17 @@ export default function Login() {
                 autoComplete='on'
               />
               <div className='mt-3'>
-                <button
+                <Button
+                  isLoading={loginMutation.isPending}
                   type='submit'
                   className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm rounded-sm hover:bg-red-600'
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
-                <Link to='/register' className='text-red-500 ml-1'>
+                <Link to={UrlPath.Register} className='text-red-500 ml-1'>
                   Đăng ký
                 </Link>
               </div>

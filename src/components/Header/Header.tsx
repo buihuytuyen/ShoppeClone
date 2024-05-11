@@ -1,17 +1,19 @@
 import { logout } from '@/apis/auth.api';
 import Popover from '@/components/Popover';
+import UrlPath from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
-  const { setIsAuthenticated, isAuthenticated } = useContext(AppContext);
+  const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
 
   const logoutMutation = useMutation({
     mutationFn: () => logout(),
     onSuccess: () => {
       setIsAuthenticated(false);
+      setProfile(null);
     }
   });
 
@@ -24,7 +26,7 @@ export default function Header() {
       <div className='container'>
         <div className='flex justify-end'>
           <Popover
-            className='flex items-center py-1 hover:text-gray-300 cursor-pointer mr-6'
+            className='flex items-center py-1 hover:text-white/70 cursor-pointer mr-6'
             render={
               <div className='bg-white shadow-sm rounded-sm border border-gray-200'>
                 <div className='p-2 cursor-pointer hover:text-orange rounded-sm'>Tiếng Việt</div>
@@ -60,7 +62,7 @@ export default function Header() {
           </Popover>
           {isAuthenticated && (
             <Popover
-              className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
+              className='flex items-center py-1 hover:text-white/70 cursor-pointer'
               render={
                 <div className='bg-white shadow-sm rounded-sm border border-gray-200'>
                   <Link
@@ -88,17 +90,17 @@ export default function Header() {
                   className='w-full h-full rounded-full object-cover'
                 />
               </div>
-              <div>Bùi Huy Tuyền</div>
+              <div>{profile?.email}</div>
             </Popover>
           )}
 
           {!isAuthenticated && (
             <div className='flex items-center'>
-              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={UrlPath.Register} className='mx-3 capitalize hover:text-white/70'>
                 Đăng ký
               </Link>
               <div className='border-r-[1px] border-r-white/40 h-4'></div>
-              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={UrlPath.Login} className='mx-3 capitalize hover:text-white/70'>
                 Đăng nhập
               </Link>
             </div>
@@ -140,7 +142,7 @@ export default function Header() {
           </form>
           <div className='col-span-1 justify-self-end'>
             <Popover
-              className='flex items-center py-1 hover:text-gray-300 cursor-pointer mr-6'
+              className='flex items-center py-1 hover:text-white/70 cursor-pointer mr-6'
               render={
                 <div className='bg-white shadow-sm rounded-sm border border-gray-200 max-w-[400px] text-sm'>
                   <div className='p-2'>
