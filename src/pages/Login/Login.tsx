@@ -55,9 +55,9 @@ export default function Login() {
   return (
     <div className='bg-orange'>
       <div className='container'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
+        <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='p-10 rounded bg-white shadow-sm' noValidate onSubmit={onsubmit}>
+            <form className='rounded bg-white p-10 shadow-sm' noValidate onSubmit={onsubmit}>
               <div className='text=2xl'>Đăng nhập</div>
               <Input<LoginShemaValidation>
                 name='email'
@@ -80,14 +80,14 @@ export default function Login() {
                 <Button
                   isLoading={loginMutation.isPending}
                   type='submit'
-                  className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm rounded-sm hover:bg-red-600'
+                  className='w-full rounded-sm bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'
                 >
                   Đăng nhập
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
-                <Link to={UrlPath.Register} className='text-red-500 ml-1'>
+                <Link to={UrlPath.Register} className='ml-1 text-red-500'>
                   Đăng ký
                 </Link>
               </div>

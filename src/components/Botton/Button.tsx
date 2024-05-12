@@ -9,7 +9,7 @@ export default function Button(props: ButtonProps) {
   const { isLoading, disabled, children, className, ...rest } = props;
   return (
     <button
-      className={classNames('w-full flex justify-center items-center', className, {
+      className={classNames('flex w-full items-center justify-center', className, {
         'cursor-not-allowed': disabled || isLoading
       })}
       disabled={disabled || isLoading}
@@ -18,7 +18,7 @@ export default function Button(props: ButtonProps) {
       {isLoading && (
         <svg
           aria-hidden='true'
-          className='w-8 h-8 text-gray-200 animate-spin fill-white mr-4'
+          className='mr-4 h-8 w-8 animate-spin fill-white text-gray-200'
           viewBox='0 0 100 101'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'

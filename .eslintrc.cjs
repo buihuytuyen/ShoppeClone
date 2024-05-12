@@ -59,7 +59,8 @@ module.exports = {
         useTabs: false,
         singleQuote: true,
         printWidth: 120,
-        jsxSingleQuote: true
+        jsxSingleQuote: true,
+        plugins: ['prettier-plugin-tailwindcss']
       }
     ]
   }

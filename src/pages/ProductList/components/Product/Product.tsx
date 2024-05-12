@@ -9,26 +9,26 @@ interface ProductProps {
 export default function Product({ product }: ProductProps) {
   return (
     <Link to=''>
-      <div className='bg-white shadow rounded-sm overflow-hidden hover:translate-y-[-0.04rem] hover:shadow-md duration-200 transition-transform'>
-        <div className='w-full pt-[100%] relative'>
+      <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-200 hover:translate-y-[-0.04rem] hover:shadow-md'>
+        <div className='relative w-full pt-[100%]'>
           <img
             src={product.image}
             alt={product.name}
-            className='absolute top-0 left-0 bg-white w-full h-full object-cover'
+            className='absolute left-0 top-0 h-full w-full bg-white object-cover'
           />
         </div>
 
-        <div className='p-2 overflow-hidden'>
-          <div className='min-h-[2rem] line-clamp-2 text-xs' title={product.name}>
+        <div className='overflow-hidden p-2'>
+          <div className='line-clamp-2 min-h-[2rem] text-xs' title={product.name}>
             {product.name}
           </div>
-          <div className='flex items-center mt-3'>
-            <div className='text-orange truncate' title={`đ${formatCurrency(product.price)}`}>
+          <div className='mt-3 flex items-center'>
+            <div className='truncate text-orange' title={`đ${formatCurrency(product.price)}`}>
               <span className='text-xs'>đ</span>
               <span>{formatCurrency(product.price)}</span>
             </div>
             <div
-              className='line-through max-w-[50%] text-gray-500 truncate ml-1'
+              className='ml-1 max-w-[50%] truncate text-gray-500 line-through'
               title={`đ${formatCurrency(product.price_before_discount)}`}
             >
               <span className='text-xs'>đ</span>

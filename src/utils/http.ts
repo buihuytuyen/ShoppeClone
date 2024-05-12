@@ -1,15 +1,9 @@
 import UrlPath from '@/constants/path';
 import { AuthReponse } from '@/types/auth.type';
 import { User } from '@/types/user.type';
-import {
-  getAccessTokenFromLs,
-  getProfileFromLS,
-   saveAccessTokenToLs,
-  saveProfileToLS
-} from '@/utils/auth';
+import { getAccessTokenFromLs, getProfileFromLS, saveAccessTokenToLs, saveProfileToLS, clearLS } from '@/utils/auth';
 import axios, { AxiosError, AxiosInstance, HttpStatusCode } from 'axios';
 import { toast } from 'react-toastify';
-import { clearLS } from './auth';
 
 class Http {
   private instance: AxiosInstance;

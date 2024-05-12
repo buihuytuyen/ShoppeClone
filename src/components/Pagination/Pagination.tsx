@@ -17,7 +17,7 @@ export default function Pagination({ page, setPage, pageSize }: PaginationProps)
     if (!dotBefore) {
       dotBefore = true;
       return (
-        <button key={index} className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'>
+        <button key={index} className=' mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'>
           ...
         </button>
       );
@@ -30,7 +30,7 @@ export default function Pagination({ page, setPage, pageSize }: PaginationProps)
     if (!dotAfer) {
       dotAfer = true;
       return (
-        <button key={index} className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border'>
+        <button key={index} className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'>
           ...
         </button>
       );
@@ -55,7 +55,7 @@ export default function Pagination({ page, setPage, pageSize }: PaginationProps)
         return (
           <button
             key={index}
-            className={classNames('bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer border', {
+            className={classNames('mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm', {
               'border-cyan-500': pageNumber === page,
               'border-transparent': pageNumber !== page
             })}
@@ -67,10 +67,10 @@ export default function Pagination({ page, setPage, pageSize }: PaginationProps)
       });
   };
   return (
-    <div className='flex flex-wrap mt-6 justify-center'>
-      <button className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer'>Prev</button>
+    <div className='mt-6 flex flex-wrap justify-center'>
+      <button className='mx-2 cursor-pointer rounded bg-white px-3 py-2 shadow-sm'>Prev</button>
       {renderPagination()}
-      <button className='bg-white rounded px-3 py-2 shadow-sm mx-2 cursor-pointer'>Next</button>
+      <button className='mx-2 cursor-pointer rounded bg-white px-3 py-2 shadow-sm'>Next</button>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function AsideFilter() {
   return (
     <div className='py-4'>
       <Link to={UrlPath.Home} className='flex items-center font-bold'>
-        <svg viewBox='0 0 12 10' className='w-3 h-4 mr-3 fill-current'>
+        <svg viewBox='0 0 12 10' className='mr-3 h-4 w-3 fill-current'>
           <g fillRule='evenodd' stroke='none' strokeWidth={1}>
             <g transform='translate(-373 -208)'>
               <g transform='translate(155 191)'>
@@ -22,11 +22,11 @@ export default function AsideFilter() {
         </svg>
         Tất cả danh mục
       </Link>
-      <div className='bg-gray-300 h-[1px] my-4'></div>
+      <div className='my-4 h-[1px] bg-gray-300'></div>
       <ul>
         <li className='py-2 pl-2'>
-          <Link to={UrlPath.Home} className='px-2 text-orange font-semibold flex items-center relative'>
-            <svg viewBox='0 0 4 7' className='fill-orange h-2 w-2 mr-2 absolute left-[-10px]'>
+          <Link to={UrlPath.Home} className='relative flex items-center px-2 font-semibold text-orange'>
+            <svg viewBox='0 0 4 7' className='absolute left-[-10px] mr-2 h-2 w-2 fill-orange'>
               <polygon points='4 3.5 0 0 0 7' />
             </svg>
             Thời trang nam
@@ -34,19 +34,19 @@ export default function AsideFilter() {
         </li>
 
         <li className='py-2 pl-2'>
-          <Link to={UrlPath.Home} className='px-2 flex items-center'>
+          <Link to={UrlPath.Home} className='flex items-center px-2'>
             Thời trang nam
           </Link>
         </li>
       </ul>
 
-      <Link to={UrlPath.Home} className='flex items-center font-bold mt-4 uppercase'>
+      <Link to={UrlPath.Home} className='mt-4 flex items-center font-bold uppercase'>
         <svg
           enableBackground='new 0 0 15 15'
           viewBox='0 0 15 15'
           x={0}
           y={0}
-          className='w-3 h-4 fill-current stroke-current mr-3'
+          className='mr-3 h-4 w-3 fill-current stroke-current'
         >
           <g>
             <polyline
@@ -60,7 +60,7 @@ export default function AsideFilter() {
         </svg>
         BỘ LỌC TÌM KIẾM
       </Link>
-      <div className='bg-gray-300 h-[1px] my-4'></div>
+      <div className='my-4 h-[1px] bg-gray-300'></div>
 
       <div className='my-5'>
         <div>Khoảng giá</div>
@@ -70,11 +70,11 @@ export default function AsideFilter() {
             <div className='mx-2 mt-2 shrink-0'>—</div>
             <Input className='grow' name='from' placeholder='đ ĐẾN' classNameInput='p-1' />
           </div>
-          <Button className='p-2 uppercase bg-orange text-white text-sm hover:bg-orange/80'>Áp dụng</Button>
+          <Button className='bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>Áp dụng</Button>
         </form>
       </div>
 
-      <div className='bg-gray-300 h-[1px] my-4'></div>
+      <div className='my-4 h-[1px] bg-gray-300'></div>
 
       <div className='text-sm'>Đánh giá</div>
       <ul className='my-3'>
@@ -83,7 +83,7 @@ export default function AsideFilter() {
             {Array(5)
               .fill(0)
               .map((_, index) => (
-                <svg key={index} viewBox='0 0 9.5 8' className='w-6 h-6 mr-1'>
+                <svg key={index} viewBox='0 0 9.5 8' className='mr-1 h-6 w-6'>
                   <defs>
                     <linearGradient id='ratingStarGradient' x1='50%' x2='50%' y1='0%' y2='100%'>
                       <stop offset={0} stopColor='#ffca11' />
@@ -114,8 +114,8 @@ export default function AsideFilter() {
         </li>
       </ul>
 
-      <div className='bg-gray-300 h-[1px] my-4'></div>
-      <Button className='p-2 uppercase bg-orange text-white text-sm hover:bg-orange/80'>Xóa tất cả</Button>
+      <div className='my-4 h-[1px] bg-gray-300'></div>
+      <Button className='bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>Xóa tất cả</Button>
     </div>
   );
 }

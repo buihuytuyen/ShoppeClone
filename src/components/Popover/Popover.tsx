@@ -87,7 +87,7 @@ export default function Popover({ children, render, className, placment = 'botto
               {...getFloatingProps()}
               className='z-10 focus:outline-none'
             >
-              <div className='bg-white text-black border-none rounded-sm shadow-lg min-w-40 h-auto' style={styles}>
+              <div className='h-auto min-w-40 rounded-sm border-none bg-white text-black shadow-lg' style={styles}>
                 {render}
                 <FloatingArrow
                   ref={arrowRef}
