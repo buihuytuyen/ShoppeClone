@@ -1,4 +1,4 @@
-import { registerAccount } from '@/apis/auth.api';
+import authApi from '@/apis/auth.api';
 import Button from '@/components/Botton';
 import Input from '@/components/Input';
 import UrlPath from '@/constants/path';
@@ -26,7 +26,7 @@ export default function Register() {
   const navagate = useNavigate();
 
   const registerAccountMutation = useMutation({
-    mutationFn: (body: Omit<RegisterShemaValidation, 'confirm_password'>) => registerAccount(body)
+    mutationFn: (body: Omit<RegisterShemaValidation, 'confirm_password'>) => authApi.registerAccount(body)
   });
 
   const onsubmit = handleSubmit((data) => {

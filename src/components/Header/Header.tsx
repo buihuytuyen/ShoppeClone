@@ -1,4 +1,4 @@
-import { logout } from '@/apis/auth.api';
+import authApi from '@/apis/auth.api';
 import Popover from '@/components/Popover';
 import UrlPath from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
@@ -10,7 +10,7 @@ export default function Header() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
 
   const logoutMutation = useMutation({
-    mutationFn: () => logout(),
+    mutationFn: () => authApi.logout(),
     onSuccess: () => {
       setIsAuthenticated(false);
       setProfile(null);

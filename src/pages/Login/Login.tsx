@@ -1,4 +1,4 @@
-import { login } from '@/apis/auth.api';
+import authApi from '@/apis/auth.api';
 import Button from '@/components/Botton';
 import Input from '@/components/Input';
 import UrlPath from '@/constants/path';
@@ -26,7 +26,7 @@ export default function Login() {
   const navagate = useNavigate();
 
   const loginMutation = useMutation({
-    mutationFn: (body: LoginShemaValidation) => login(body)
+    mutationFn: (body: LoginShemaValidation) => authApi.login(body)
   });
 
   const onsubmit = handleSubmit((data) => {
