@@ -22,7 +22,7 @@ export default function Product({ product }: ProductProps) {
           <div className='line-clamp-2 min-h-[2rem] text-xs' title={product.name}>
             {product.name}
           </div>
-          <div className='mt-3 flex items-center'>
+          <div className='mt-3 flex items-center text-sm'>
             <div className='truncate text-orange' title={`đ${formatCurrency(product.price)}`}>
               <span className='text-xs'>đ</span>
               <span>{formatCurrency(product.price)}</span>

@@ -61,7 +61,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProps) {
               pathname: `${UrlPath.Home}`,
               search: createSearchParams({
                 ...queryConfig,
-                page: page.toString()
+                page: pageNumber.toString()
               }).toString()
             }}
             key={index}

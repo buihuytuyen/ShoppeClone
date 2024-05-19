@@ -18,7 +18,7 @@ export default function ProductList() {
   const queryConfig: QueryConfig = omitBy(
     {
       page: queryParam.page || '1',
-      limit: queryParam.limit || 3,
+      limit: queryParam.limit || '20',
       sort_by: queryParam.sort_by,
       exclude: queryParam.exclude,
       name: queryParam.name,
@@ -36,8 +36,6 @@ export default function ProductList() {
     placeholderData: keepPreviousData
   });
 
-  console.log(data);
-
   return (
     <div className='bg-gray-200 py-6'>
       <div className='container'>
@@ -47,7 +45,7 @@ export default function ProductList() {
               <AsideFilter />
             </div>
             <div className='col-span-9'>
-              <SortProductList />
+              <SortProductList queryConfig={queryConfig} pageSize={data.data.data.pagination.page_size} />
               <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
                 {data.data.data.products.map((product) => (
                   <div key={product._id} className='col-span-1'>
