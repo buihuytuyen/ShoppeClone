@@ -1,18 +1,62 @@
 import Button from '@/components/Botton';
-import Input from '@/components/Input';
+import InputNumber from '@/components/InputNumber';
 import UrlPath from '@/constants/path';
 import { QueryConfig } from '@/pages/ProductList/ProductList';
 import { Category } from '@/types/category.type';
+import { NoUndefinedField } from '@/types/utils.type';
+import { FilterSchemaValidation, filterSchemaValidation } from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames';
-import { createSearchParams, Link } from 'react-router-dom';
+import { useForm, Controller } from 'react-hook-form';
+import { createSearchParams, Link, useNavigate } from 'react-router-dom';
+import { ObjectSchema } from 'yup';
 
 interface AsideFilterProps {
   categories: Category[];
   queryConfig: QueryConfig;
 }
 
+type FormData = NoUndefinedField<FilterSchemaValidation>;
+
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
   const { category } = queryConfig;
+
+  const {
+    handleSubmit,
+    control,
+    trigger,
+    watch,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      price_min: '',
+      price_max: ''
+    },
+    resolver: yupResolver<FormData>(filterSchemaValidation as ObjectSchema<FormData>),
+    shouldFocusError: false
+  });
+  const naviagte = useNavigate();
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      naviagte({
+        pathname: UrlPath.Home,
+        search: createSearchParams({
+          ...queryConfig,
+          price_min: data.price_min,
+          price_max: data.price_max
+        }).toString()
+      });
+    },
+    (error) => {
+      // error.price_max?.ref?.focus();
+    }
+  );
+
+  const valueForm = watch();
+
+  console.log(valueForm);
+
   return (
     <div className='py-4'>
       <Link
@@ -87,12 +131,47 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
 
       <div className='my-5'>
         <div>Khoảng giá</div>
-        <form className='mt-2'>
+        <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            <Input className='grow' name='from' placeholder='đ TỪ' classNameInput='p-1' />
+            <Controller
+              control={control}
+              name='price_min'
+              render={({ field: { onChange, value, ref } }) => (
+                <InputNumber
+                  className='grow'
+                  name='from'
+                  placeholder='đ TỪ'
+                  classNameInput='p-1'
+                  classNameError='hidden'
+                  onChange={onChange}
+                  value={value}
+                  ref={ref}
+                />
+              )}
+            />
+
             <div className='mx-2 mt-2 shrink-0'>—</div>
-            <Input className='grow' name='from' placeholder='đ ĐẾN' classNameInput='p-1' />
+            <Controller
+              control={control}
+              name='price_max'
+              render={({ field: { onChange, value, ref } }) => (
+                <InputNumber
+                  className='grow'
+                  name='from'
+                  placeholder='đ ĐẾN'
+                  classNameInput='p-1'
+                  classNameError='hidden'
+                  onChange={(e) => {
+                    onChange(e);
+                    trigger('price_min');
+                  }}
+                  value={value}
+                  ref={ref}
+                />
+              )}
+            />
           </div>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>{errors.price_min?.message}</div>
           <Button className='bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>Áp dụng</Button>
         </form>
       </div>

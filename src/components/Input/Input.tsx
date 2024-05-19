@@ -30,7 +30,7 @@ export default function Input<TFieldValues extends FieldValues>({
           classNameInput
         )}
         type={type}
-        {...(register && name ? register(name, rules) : {})}
+        {...(register && name ? register(name, rules) : null)}
         {...rest}
       />
       <div className={classNames('mt-1 min-h-[1.25rem] text-sm text-red-600', classNameError)}>{errorMessage}</div>
