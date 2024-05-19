@@ -5,7 +5,7 @@ import ProductRating from '@/components/ProductRating';
 import { formatCurrency, formatNumberToSocialStyle, rateSale } from '@/utils/utils';
 import InputNumber from '@/components/InputNumber';
 import DOMPurify from 'dompurify';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, MouseEvent, useRef } from 'react';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -45,6 +45,38 @@ export default function ProductDetail() {
     }
   };
 
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const handleZoom = (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+    const react = event.currentTarget.getBoundingClientRect();
+    const image = imageRef.current as HTMLImageElement;
+    const { naturalHeight, naturalWidth } = image;
+
+    // Cách 1
+    // const { offsetX, offsetY } = event.nativeEvent;
+
+    // Cách 2
+    const offsetX = event.pageX - (react.x + window.screenX);
+    const offsetY = event.pageY - (react.y + window.screenY);
+
+    const top = offsetY * (1 - naturalHeight / react.height);
+    const left = offsetX * (1 - naturalWidth / react.width);
+
+    image.style.width = `${naturalWidth}px`;
+    image.style.height = `${naturalHeight}px`;
+    image.style.maxWidth = 'unset';
+
+    image.style.top = `${top}px`;
+    image.style.left = `${left}px`;
+
+    // event bubble
+    // Set pointer-events to none to allow the mouse to pass through the element.
+  };
+
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style');
+  };
+
   if (!product) return null;
 
   return (
@@ -53,11 +85,16 @@ export default function ProductDetail() {
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] shadow'>
+              <div
+                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
+                onMouseMove={handleZoom}
+                onMouseLeave={handleRemoveZoom}
+              >
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className='absolute left-0 top-0 h-full w-full bg-white object-cover'
+                  className=' absolute left-0 top-0 h-full w-full bg-white object-cover'
+                  ref={imageRef}
                 />
               </div>
 
@@ -154,9 +191,8 @@ export default function ProductDetail() {
                   </button>
                   <InputNumber
                     value={1}
-                    className=''
                     classNameError='hidden'
-                    classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
+                    classNameInput='h-8 !w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
                   />
                   <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'>
                     <svg
