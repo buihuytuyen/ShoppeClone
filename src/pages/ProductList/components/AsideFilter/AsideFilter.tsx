@@ -38,21 +38,16 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
   });
   const navigate = useNavigate();
 
-  const onSubmit = handleSubmit(
-    (data) => {
-      navigate({
-        pathname: UrlPath.Home,
-        search: createSearchParams({
-          ...queryConfig,
-          price_min: data.price_min,
-          price_max: data.price_max
-        }).toString()
-      });
-    },
-    (error) => {
-      // error.price_max?.ref?.focus();
-    }
-  );
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: UrlPath.Home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_min: data.price_min,
+        price_max: data.price_max
+      }).toString()
+    });
+  });
 
   const handleRemoveAll = () => {
     navigate({

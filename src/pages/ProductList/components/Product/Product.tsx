@@ -1,4 +1,5 @@
 import ProductRating from '@/components/ProductRating';
+import UrlPath from '@/constants/path';
 import { Product as ProductType } from '@/types/product.type';
 import { formatCurrency, formatNumberToSocialStyle } from '@/utils/utils';
 import { Link } from 'react-router-dom';
@@ -8,7 +9,7 @@ interface ProductProps {
 }
 export default function Product({ product }: ProductProps) {
   return (
-    <Link to=''>
+    <Link to={`${UrlPath.Home}${product._id}`}>
       <div className='overflow-hidden rounded-sm bg-white shadow transition-transform duration-200 hover:translate-y-[-0.04rem] hover:shadow-md'>
         <div className='relative w-full pt-[100%]'>
           <img
@@ -24,14 +25,14 @@ export default function Product({ product }: ProductProps) {
           </div>
           <div className='mt-3 flex items-center text-sm'>
             <div className='truncate text-orange' title={`đ${formatCurrency(product.price)}`}>
-              <span className='text-xs'>đ</span>
+              <span className='text-xs'>₫</span>
               <span>{formatCurrency(product.price)}</span>
             </div>
             <div
               className='ml-1 max-w-[50%] truncate text-gray-500 line-through'
-              title={`đ${formatCurrency(product.price_before_discount)}`}
+              title={`₫${formatCurrency(product.price_before_discount)}`}
             >
-              <span className='text-xs'>đ</span>
+              <span className='text-xs'>₫</span>
               <span>{formatCurrency(product.price_before_discount)}</span>
             </div>
           </div>
