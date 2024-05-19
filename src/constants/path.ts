@@ -4,7 +4,7 @@ const UrlPath = {
   Register: '/register',
   Logout: '/logout',
   Profile: '/profile',
-  ProductDetail: ':id'
+  ProductDetail: ':nameId'
 } as const;
 
 export default UrlPath;

@@ -2,13 +2,14 @@ import productApi from '@/apis/product.api';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import ProductRating from '@/components/ProductRating';
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from '@/utils/utils';
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '@/utils/utils';
 import InputNumber from '@/components/InputNumber';
 import DOMPurify from 'dompurify';
 import { useEffect, useMemo, useState, MouseEvent, useRef } from 'react';
 
 export default function ProductDetail() {
-  const { id } = useParams();
+  const { nameId } = useParams();
+  const id = getIdFromNameId(nameId as string);
   const { data: productDetail } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
@@ -82,7 +83,7 @@ export default function ProductDetail() {
   return (
     <div className='bg-gray-200 py-6'>
       <div className='container'>
-        <div className='bg-white p-4 shadow'>
+        <div className='rounded bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
               <div
@@ -254,7 +255,7 @@ export default function ProductDetail() {
       </div>
 
       <div className='container'>
-        <div className='mt-8 bg-white p-4 shadow'>
+        <div className='mt-8 rounded bg-white p-4 shadow'>
           <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
           <div
             className='mx-5 mb-4 mt-12 text-sm leading-loose'
