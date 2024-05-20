@@ -1,5 +1,5 @@
 import UrlPath from '@/constants/path';
-import { QueryConfig } from '@/pages/ProductList/ProductList';
+import { QueryConfig } from '@/hooks/useQueryConfig';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 interface RatingStarsProps {

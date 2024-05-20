@@ -1,7 +1,7 @@
 import Button from '@/components/Botton';
 import InputNumber from '@/components/InputNumber';
 import UrlPath from '@/constants/path';
-import { QueryConfig } from '@/pages/ProductList/ProductList';
+import { QueryConfig } from '@/hooks/useQueryConfig';
 import RatingStars from '@/pages/RatingStarS';
 import { Category } from '@/types/category.type';
 import { NoUndefinedField } from '@/types/utils.type';

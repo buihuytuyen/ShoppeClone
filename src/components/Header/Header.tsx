@@ -2,12 +2,26 @@ import authApi from '@/apis/auth.api';
 import Popover from '@/components/Popover';
 import UrlPath from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
+import useQueryConfig from '@/hooks/useQueryConfig';
+import { productSchemaValidation, ProductSchemaValidation } from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
+import { omit } from 'lodash';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
+
+  const queryConfig = useQueryConfig();
+
+  const { register, handleSubmit } = useForm<ProductSchemaValidation>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(productSchemaValidation)
+  });
 
   const logoutMutation = useMutation({
     mutationFn: () => authApi.logout(),
@@ -20,6 +34,25 @@ export default function Header() {
   const handleLogout = () => {
     logoutMutation.mutate();
   };
+
+  const navigate = useNavigate();
+
+  const onSubmitSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : { ...queryConfig, name: data.name };
+    navigate({
+      pathname: `${UrlPath.Home}`,
+      search: createSearchParams(config).toString()
+    });
+    console.log(data);
+  });
 
   return (
     <div className='bg-header-gradient pb-5 pt-2 text-white'>
@@ -114,13 +147,13 @@ export default function Header() {
               </g>
             </svg>
           </Link>
-          <form className='col-span-9'>
+          <form className='col-span-9' onSubmit={onSubmitSearch}>
             <div className='flex rounded-sm bg-white p-1'>
               <input
                 type='text'
-                name='search'
                 placeholder='Free Ship Đơn từ 0Đ'
                 className='flex-grow border-none bg-transparent px-3 py-2 text-black outline-none'
+                {...register('name')}
               />
               <button className='flex-shrink rounded-sm bg-orange px-6 py-2 hover:opacity-90'>
                 <svg

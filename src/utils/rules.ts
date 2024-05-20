@@ -34,7 +34,8 @@ export const schemaValidation = yup.object({
     name: 'price-not-allowed',
     message: 'Giá không hợp lệ',
     test: testPriceMinMax
-  })
+  }),
+  name: yup.string().trim().required('Tên sản phẩm không được để trống')
 });
 
 export type SchemaValidation = yup.InferType<typeof schemaValidation>;
@@ -51,6 +52,9 @@ export type Rules = {
 
 export const filterSchemaValidation = schemaValidation.pick(['price_min', 'price_max']);
 export type FilterSchemaValidation = yup.InferType<typeof filterSchemaValidation>;
+
+export const productSchemaValidation = schemaValidation.pick(['name']);
+export type ProductSchemaValidation = yup.InferType<typeof productSchemaValidation>;
 
 export const getRules = (getValues?: UseFormGetValues<RegisterShemaValidation>): Rules => ({
   email: {

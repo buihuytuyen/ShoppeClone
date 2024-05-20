@@ -1,6 +1,6 @@
 import UrlPath from '@/constants/path';
 import { SortBy, Order } from '@/constants/product';
-import { QueryConfig } from '@/pages/ProductList/ProductList';
+import { QueryConfig } from '@/hooks/useQueryConfig';
 import { ProductListConfig } from '@/types/product.type';
 import classNames from 'classnames';
 import { omit } from 'lodash';
