@@ -1,15 +1,21 @@
 import authApi from '@/apis/auth.api';
+import purchaseApi from '@/apis/purchase.api';
 import Popover from '@/components/Popover';
 import UrlPath from '@/constants/path';
+import { PurchasesStatus } from '@/constants/purchase';
 import { AppContext } from '@/contexts/app.context';
 import useQueryConfig from '@/hooks/useQueryConfig';
 import { productSchemaValidation, ProductSchemaValidation } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { omit } from 'lodash';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
+import noProductInCart from '@/assets/images/no-product-in-cart.png';
+import { formatCurrency } from '@/utils/utils';
+
+const MAX_PRODUCT_IN_CART = 5;
 
 export default function Header() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
@@ -30,6 +36,17 @@ export default function Header() {
       setProfile(null);
     }
   });
+
+  // Khi chuyển trang thì Header chỉ bị render
+  // Chứ không bị unmount - mounting again
+  // Nêu các query này sẽ không bị inactive(Khi không còn component nào sử dụng nó)
+  // => Không cần gọi lại => không cần set staleTime: Infinity
+  const { data: purchaseInCartData } = useQuery({
+    queryKey: ['purchases', { status: PurchasesStatus.InCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.InCart })
+  });
+
+  const purcharseInCart = purchaseInCartData?.data.data;
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -178,116 +195,56 @@ export default function Header() {
               className='mr-6 flex cursor-pointer items-center py-1 hover:text-white/70'
               render={
                 <div className='max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-sm'>
-                  <div className='p-2'>
-                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-                            alt='anh'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam quae officia assumenda,
-                            aspernatur, fugiat saepe vitae dicta illum, veniam at fugit. Modi tenetur nihil libero quia
-                            ex inventore ea est?
+                  {purcharseInCart ? (
+                    <div className='p-2'>
+                      <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                      <div className='mt-5'>
+                        {purcharseInCart.slice(0, MAX_PRODUCT_IN_CART).map((purchase) => (
+                          <div className='mt-2 flex items-center rounded p-2 hover:bg-gray-100' key={purchase._id}>
+                            <div className='flex-shrink-0 shadow-sm'>
+                              <img
+                                src={purchase.product.image}
+                                alt={purchase.product.name}
+                                className='h-11 w-11 object-cover'
+                              />
+                            </div>
+                            <div className='ml-2 flex-grow overflow-hidden'>
+                              <div className='line-clamp-2 text-xs' title={purchase.product.name}>
+                                {purchase.product.name}
+                              </div>
+                            </div>
+                            <div className='ml-2 flex-shrink-0'>
+                              <span className='text-orange' title={`₫${formatCurrency(purchase.product.price)}`}>
+                                ₫{formatCurrency(purchase.product.price)}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>đ469.000</span>
-                        </div>
+                        ))}
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-                            alt='anh'
-                            className='h-11 w-11 object-cover'
-                          />
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='pl-2 text-xs capitalize text-gray-500'>
+                          <span className='font-bold'>
+                            {purcharseInCart.length > MAX_PRODUCT_IN_CART
+                              ? `${purcharseInCart.length - MAX_PRODUCT_IN_CART} `
+                              : ''}
+                          </span>
+                          Thêm vào giỏ hàng
                         </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam quae officia assumenda,
-                            aspernatur, fugiat saepe vitae dicta illum, veniam at fugit. Modi tenetur nihil libero quia
-                            ex inventore ea est?
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>đ469.000</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-                            alt='anh'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam quae officia assumenda,
-                            aspernatur, fugiat saepe vitae dicta illum, veniam at fugit. Modi tenetur nihil libero quia
-                            ex inventore ea est?
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>đ469.000</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-                            alt='anh'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam quae officia assumenda,
-                            aspernatur, fugiat saepe vitae dicta illum, veniam at fugit. Modi tenetur nihil libero quia
-                            ex inventore ea est?
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>đ469.000</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-                            alt='anh'
-                            className='h-11 w-11 object-cover'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam quae officia assumenda,
-                            aspernatur, fugiat saepe vitae dicta illum, veniam at fugit. Modi tenetur nihil libero quia
-                            ex inventore ea est?
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>đ469.000</span>
+                        <div className='cursor-pointer rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                          Xem giỏ hàng
                         </div>
                       </div>
                     </div>
-                    <div className='mt-6 flex items-center justify-between'>
-                      <div className='text-xs capitalize text-gray-500'>Thêm vào giỏ hàng</div>
-                      <div className='cursor-pointer rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
-                        Xem giỏ hàng
-                      </div>
+                  ) : (
+                    <div className='flex h-[300px] w-[300px] flex-col items-center justify-center p-2'>
+                      <img src={noProductInCart} alt='no-product-in-cart' className='h-24 w-24' />
+                      <div className='capitalize'>Chưa có sản phẩm</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               }
             >
-              <Link to='' className=''>
+              <Link to='' className='relative'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -302,6 +259,11 @@ export default function Header() {
                     d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
                   />
                 </svg>
+                {purcharseInCart && (
+                  <span className='absolute left-[17px] top-[-5px] rounded-full border-b border-orange bg-white px-[9px] py-[1px] text-xs text-orange'>
+                    {purcharseInCart.length}
+                  </span>
+                )}
               </Link>
             </Popover>
           </div>

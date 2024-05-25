@@ -1,5 +1,5 @@
 import productApi from '@/apis/product.api';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import ProductRating from '@/components/ProductRating';
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '@/utils/utils';
@@ -8,6 +8,10 @@ import { useEffect, useMemo, useState, MouseEvent, useRef } from 'react';
 import { ProductListConfig } from '@/types/product.type';
 import Product from '@/pages/ProductList/components/Product';
 import QuantityController from '@/components/QuantityController';
+import purchaseApi from '@/apis/purchase.api';
+import { queryClient } from '@/main';
+import { PurchasesStatus } from '@/constants/purchase';
+import { toast } from 'react-toastify';
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState<number>(1);
@@ -38,7 +42,9 @@ export default function ProductDetail() {
     staleTime: 1000 * 60 * 3
   });
 
-  console.log(product);
+  const addToCartMutation = useMutation({
+    mutationFn: (body: { product_id: string; buy_count: number }) => purchaseApi.addToCart(body)
+  });
 
   const [currentIndexImages, setcurrentIndexImages] = useState([0, 5]);
 
@@ -53,6 +59,21 @@ export default function ProductDetail() {
   const currentImages = useMemo(() => {
     return product ? product.images.slice(...currentIndexImages) : [];
   }, [product, currentIndexImages]);
+
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: PurchasesStatus.InCart }] });
+          toast.success(data.data.message, {
+            position: 'bottom-right',
+            autoClose: 1000
+          });
+        }
+      }
+    );
+  };
 
   const chooseActiveImage = (image: string) => {
     setActiveImage(image);
@@ -213,7 +234,10 @@ export default function ProductDetail() {
               </div>
 
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                <button
+                  onClick={addToCart}
+                  className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     enableBackground='new 0 0 15 15'
