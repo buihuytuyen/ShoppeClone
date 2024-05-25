@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { ChangeEvent, forwardRef, InputHTMLAttributes } from 'react';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
   classNameInput?: string;
   classNameError?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
-const InputNumber = forwardRef<HTMLInputElement, Props>(function InputNumber(
-  { className, errorMessage, type = 'text', classNameError, classNameInput, onChange, ...rest }: Props,
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumber(
+  { className, errorMessage, type = 'text', classNameError, classNameInput, onChange, ...rest }: InputNumberProps,
   ref
 ) {
   const handleChange = (even: ChangeEvent<HTMLInputElement>) => {
