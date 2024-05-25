@@ -6,6 +6,8 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import InputNumber from '@/components/InputNumber';
 import DOMPurify from 'dompurify';
 import { useEffect, useMemo, useState, MouseEvent, useRef } from 'react';
+import { ProductListConfig } from '@/types/product.type';
+import Product from '@/pages/ProductList/components/Product';
 
 export default function ProductDetail() {
   const { nameId } = useParams();
@@ -14,7 +16,23 @@ export default function ProductDetail() {
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   });
+
   const product = productDetail?.data.data;
+
+  const queryConfig: ProductListConfig = {
+    page: 1,
+    limit: 20,
+    category: product?.category._id
+  };
+
+  const { data: productData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => productApi.getProducts(queryConfig),
+    enabled: !!product,
+    staleTime: 1000 * 60 * 3
+  });
+
+  console.log(product);
 
   const [currentIndexImages, setcurrentIndexImages] = useState([0, 5]);
 
@@ -261,6 +279,20 @@ export default function ProductDetail() {
             className='mx-5 mb-4 mt-12 text-sm leading-loose'
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description) }}
           ></div>
+        </div>
+      </div>
+      <div className='container'>
+        <div className='mt-8  rounded bg-white p-4 shadow'>
+          <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
+          {productData && (
+            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+              {productData.data.data.products.map((product) => (
+                <div key={product._id} className='col-span-1'>
+                  <Product product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
