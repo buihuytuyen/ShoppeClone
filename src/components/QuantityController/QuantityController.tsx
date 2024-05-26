@@ -1,9 +1,10 @@
 import InputNumber, { InputNumberProps } from '@/components/InputNumber';
 import classNames from 'classnames';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface QuantityControllerProps extends InputNumberProps {
   max?: number;
+  initialValue?: number;
   onIncrease?: (value: number) => void;
   onDecrease?: (value: number) => void;
   onTyping?: (value: number) => void;
@@ -16,9 +17,12 @@ export default function QuantityController({
   onDecrease,
   onTyping,
   value,
+  initialValue = 1,
   classNameWrapper = 'ml-10',
   ...rest
 }: QuantityControllerProps) {
+  const [localValue, setLocalValue] = useState<number>(Number(value || initialValue));
+
   const handleChange = (even: ChangeEvent<HTMLInputElement>) => {
     let _value = Number(even.target.value);
     if (max && _value > max) {
@@ -29,10 +33,11 @@ export default function QuantityController({
     if (onTyping) {
       onTyping(_value);
     }
+    setLocalValue(_value);
   };
 
   const increase = () => {
-    let _value = Number(value) + 1;
+    let _value = Number(value || localValue) + 1;
     if (max && _value > max) {
       _value = max;
     } else if (_value < 1) {
@@ -41,10 +46,11 @@ export default function QuantityController({
     if (onIncrease) {
       onIncrease(_value);
     }
+    setLocalValue(_value);
   };
 
   const decrease = () => {
-    let _value = Number(value) - 1;
+    let _value = Number(value || localValue) - 1;
     if (max && _value > max) {
       _value = max;
     } else if (_value < 1) {
@@ -53,11 +59,15 @@ export default function QuantityController({
     if (onDecrease) {
       onDecrease(_value);
     }
+    setLocalValue(_value);
   };
 
   return (
     <div className={classNames('ml-10 flex items-center', classNameWrapper)}>
-      <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600' onClick={decrease}>
+      <button
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+        onClick={decrease}
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
@@ -70,13 +80,16 @@ export default function QuantityController({
         </svg>
       </button>
       <InputNumber
-        value={value}
+        value={value || localValue}
         onChange={handleChange}
         classNameError='hidden'
         classNameInput='h-8 !w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
         {...rest}
       />
-      <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600' onClick={increase}>
+      <button
+        className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
+        onClick={increase}
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'

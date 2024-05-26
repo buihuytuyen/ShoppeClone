@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { ChangeEvent, forwardRef, InputHTMLAttributes } from 'react';
+import { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
 
 export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
@@ -8,13 +8,27 @@ export interface InputNumberProps extends InputHTMLAttributes<HTMLInputElement> 
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumber(
-  { className, errorMessage, type = 'text', classNameError, classNameInput, onChange, ...rest }: InputNumberProps,
+  {
+    className,
+    errorMessage,
+    type = 'text',
+    classNameError,
+    classNameInput,
+    onChange,
+    value = '',
+    ...rest
+  }: InputNumberProps,
   ref
 ) {
+  const [localValue, setlocalValue] = useState<string>(String(value));
+
   const handleChange = (even: ChangeEvent<HTMLInputElement>) => {
     const { value } = even.target;
-    if ((/^\d+$/.test(value) || value === '') && onChange) {
-      onChange(even);
+    if (/^\d+$/.test(value) || value === '') {
+      if (onChange) {
+        onChange(even);
+      }
+      setlocalValue(value);
     }
   };
 
@@ -26,6 +40,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
           classNameInput
         )}
         type={type}
+        value={value || localValue}
         {...rest}
         onChange={handleChange}
         ref={ref}
