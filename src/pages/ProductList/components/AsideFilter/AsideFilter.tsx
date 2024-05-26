@@ -1,5 +1,6 @@
 import Button from '@/components/Botton';
 import InputNumber from '@/components/InputNumber';
+import InputV2 from '@/components/InputV2';
 import UrlPath from '@/constants/path';
 import { QueryConfig } from '@/hooks/useQueryConfig';
 import RatingStars from '@/pages/RatingStarS';
@@ -163,7 +164,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
               render={({ field: { onChange, value, ref } }) => (
                 <InputNumber
                   className='grow'
-                  name='from'
+                  name='to'
                   placeholder='đ ĐẾN'
                   classNameInput='p-1'
                   classNameError='hidden'
