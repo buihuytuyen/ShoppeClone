@@ -18,7 +18,7 @@ export default function QuantityController({
   onTyping,
   value,
   initialValue = 1,
-  classNameWrapper = 'ml-10',
+  classNameWrapper,
   ...rest
 }: QuantityControllerProps) {
   const [localValue, setLocalValue] = useState<number>(Number(value || initialValue));
@@ -63,7 +63,7 @@ export default function QuantityController({
   };
 
   return (
-    <div className={classNames('ml-10 flex items-center', classNameWrapper)}>
+    <div className={classNames('flex items-center', classNameWrapper)}>
       <button
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
         onClick={decrease}

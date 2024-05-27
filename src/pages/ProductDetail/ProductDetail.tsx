@@ -228,6 +228,7 @@ export default function ProductDetail() {
                   onTyping={handleBuyCount}
                   value={buyCount}
                   max={product.quantity}
+                  classNameWrapper='ml-10'
                 />
 
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} Sản phẩm có sẵn</div>

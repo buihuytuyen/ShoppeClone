@@ -8,7 +8,10 @@ const UrlPath = {
   Product: '/products',
   Category: '/categories',
   Purchase: '/purchases',
-  AddToCart: '/add-to-cart'
+  AddToCart: '/add-to-cart',
+  BuyProducts: '/buy-products',
+  UpdatePurchase: '/update-purchase',
+  Cart: '/cart'
 } as const;
 
 export default UrlPath;

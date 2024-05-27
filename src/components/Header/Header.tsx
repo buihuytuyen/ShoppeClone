@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import noProductInCart from '@/assets/images/no-product-in-cart.png';
 import { formatCurrency } from '@/utils/utils';
+import { queryClient } from '@/main';
 
 const MAX_PRODUCT_IN_CART = 5;
 
@@ -34,6 +35,7 @@ export default function Header() {
     onSuccess: () => {
       setIsAuthenticated(false);
       setProfile(null);
+      queryClient.removeQueries({ queryKey: ['purchases', { status: PurchasesStatus.InCart }] });
     }
   });
 
@@ -43,7 +45,8 @@ export default function Header() {
   // => Không cần gọi lại => không cần set staleTime: Infinity
   const { data: purchaseInCartData } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.InCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.InCart })
+    queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.InCart }),
+    enabled: isAuthenticated
   });
 
   const purcharseInCart = purchaseInCartData?.data.data;
@@ -68,7 +71,6 @@ export default function Header() {
       pathname: `${UrlPath.Home}`,
       search: createSearchParams(config).toString()
     });
-    console.log(data);
   });
 
   return (
@@ -230,9 +232,12 @@ export default function Header() {
                           </span>
                           Thêm vào giỏ hàng
                         </div>
-                        <div className='cursor-pointer rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
+                        <Link
+                          to={UrlPath.Cart}
+                          className='cursor-pointer rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
+                        >
                           Xem giỏ hàng
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   ) : (

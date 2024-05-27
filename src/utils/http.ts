@@ -53,7 +53,10 @@ class Http {
         if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
           const data: any | undefined = error.response?.data;
           const message = data.message || error.message;
-          toast.error(message);
+          toast.error(message, {
+            position: 'bottom-right',
+            autoClose: 2000
+          });
         }
         return Promise.reject(error);
       }
