@@ -188,7 +188,7 @@ export default function Cart() {
                               <div className='flex-grow px-5 pb-2 pt-1'>
                                 <Link
                                   to={`${UrlPath.Home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
-                                  className='line-clamp-2'
+                                  className='line-clamp-2 text-left'
                                 >
                                   {purchase.product.name}
                                 </Link>

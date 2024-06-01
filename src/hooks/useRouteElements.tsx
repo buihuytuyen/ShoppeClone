@@ -1,5 +1,6 @@
 import UrlPath from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
+import CartLayout from '@/layouts/CartLayout';
 import MainLayout from '@/layouts/MainLayout';
 import RegisterLayout from '@/layouts/RegisterLayout';
 import Cart from '@/pages/Cart';
@@ -38,9 +39,9 @@ const useRouteElements = () => {
         {
           path: UrlPath.Cart,
           element: (
-            <MainLayout>
+            <CartLayout>
               <Cart />
-            </MainLayout>
+            </CartLayout>
           )
         }
       ]
