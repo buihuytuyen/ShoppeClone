@@ -7,8 +7,11 @@ import Cart from '@/pages/Cart';
 import Login from '@/pages/Login';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductList from '@/pages/ProductList';
-import Profile from '@/pages/Profile';
 import Register from '@/pages/Register';
+import UserLayout from '@/pages/User/layouts/Userlayout';
+import ChangePassword from '@/pages/User/pages/ChangePassword';
+import HistoryPurchase from '@/pages/User/pages/HistoryPurchase';
+import Profile from '@/pages/User/pages/Profile';
 import { useContext } from 'react';
 import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
@@ -29,20 +32,34 @@ const useRouteElements = () => {
       element: <ProtectedRoute />,
       children: [
         {
-          path: UrlPath.Profile,
-          element: (
-            <MainLayout>
-              <Profile />
-            </MainLayout>
-          )
-        },
-        {
           path: UrlPath.Cart,
           element: (
             <CartLayout>
               <Cart />
             </CartLayout>
           )
+        },
+        {
+          path: UrlPath.User,
+          element: (
+            <MainLayout>
+              <UserLayout />
+            </MainLayout>
+          ),
+          children: [
+            {
+              path: UrlPath.Profile,
+              element: <Profile />
+            },
+            {
+              path: UrlPath.ChangePassword,
+              element: <ChangePassword />
+            },
+            {
+              path: UrlPath.HistoryPurchase,
+              element: <HistoryPurchase />
+            }
+          ]
         }
       ]
     },

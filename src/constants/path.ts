@@ -3,7 +3,9 @@ const UrlPath = {
   Login: '/login',
   Register: '/register',
   Logout: '/logout',
-  Profile: '/profile',
+  Profile: '/user/profile',
+  ChangePassword: '/user/password',
+  HistoryPurchase: '/user/purchase',
   ProductDetail: ':nameId',
   Product: '/products',
   Category: '/categories',
@@ -11,7 +13,8 @@ const UrlPath = {
   AddToCart: '/add-to-cart',
   BuyProducts: '/buy-products',
   UpdatePurchase: '/update-purchase',
-  Cart: '/cart'
+  Cart: '/cart',
+  User: '/user'
 } as const;
 
 export default UrlPath;

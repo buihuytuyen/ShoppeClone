@@ -67,7 +67,7 @@ export default function NavHeader() {
           render={
             <div className='rounded-sm border border-gray-200 bg-white shadow-sm'>
               <Link
-                to='/'
+                to={UrlPath.Profile}
                 className='block bg-white px-3 py-2 hover:bg-slate-100 hover:text-cyan-500 focus:outline-none'
               >
                 Tài khoản của tôi

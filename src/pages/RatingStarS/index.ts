@@ -1,3 +1,3 @@
-import RatingStars from '@/pages/RatingStarS/RatingStars';
+import RatingStars from '@/pages/RatingStars/RatingStars';
 
 export default RatingStars;

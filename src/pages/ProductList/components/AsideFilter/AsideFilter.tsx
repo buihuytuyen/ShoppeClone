@@ -2,7 +2,7 @@ import Button from '@/components/Botton';
 import InputNumber from '@/components/InputNumber';
 import UrlPath from '@/constants/path';
 import { QueryConfig } from '@/hooks/useQueryConfig';
-import RatingStars from '@/pages/RatingStarS';
+import RatingStars from '@/pages/RatingStars';
 import { Category } from '@/types/category.type';
 import { NoUndefinedField } from '@/types/utils.type';
 import { FilterSchemaValidation, filterSchemaValidation } from '@/utils/rules';
