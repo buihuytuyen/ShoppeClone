@@ -1,6 +1,6 @@
 import productApi from '@/apis/product.api';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProductRating from '@/components/ProductRating';
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '@/utils/utils';
 import DOMPurify from 'dompurify';
@@ -12,9 +12,11 @@ import purchaseApi from '@/apis/purchase.api';
 import { queryClient } from '@/main';
 import { PurchasesStatus } from '@/constants/purchase';
 import { toast } from 'react-toastify';
+import UrlPath from '@/constants/path';
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState<number>(1);
+  const navigate = useNavigate();
 
   const handleBuyCount = (value: number) => {
     setBuyCount(value);
@@ -73,6 +75,12 @@ export default function ProductDetail() {
         }
       }
     );
+  };
+
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount });
+    const purchase = res.data.data;
+    navigate(UrlPath.Cart, { state: { purchaseId: purchase._id } });
   };
 
   const chooseActiveImage = (image: string) => {
@@ -270,7 +278,10 @@ export default function ProductDetail() {
                   Thêm vào giỏ hàng
                 </button>
 
-                <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={buyNow}
+                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center rounded-sm bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>

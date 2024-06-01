@@ -5,22 +5,21 @@ import UrlPath from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { formatCurrency, generateNameId } from '@/utils/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useContext, useEffect, useMemo } from 'react';
 import { Purchase } from '@/types/purchase.type';
 import { produce } from 'immer';
 import { keyBy } from 'lodash';
 import { toast } from 'react-toastify';
 import noProductInCart from '@/assets/images/no-product-in-cart.png';
-
-interface ExtendedPurchase extends Purchase {
-  disabled: boolean;
-  checked: boolean;
-}
+import { AppContext } from '@/contexts/app.context';
 
 export default function Cart() {
-  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([]);
+  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext);
 
+  const location = useLocation();
+  console.log(location);
+  const choosenPurchaseIdFromLocation = (location.state as { purchaseId: string } | null)?.purchaseId;
   const { data: purchaseInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: PurchasesStatus.InCart }],
     queryFn: () => purchaseApi.getPurchases({ status: PurchasesStatus.InCart })
@@ -36,23 +35,39 @@ export default function Cart() {
         purcharseInCart?.map((purchase) => ({
           ...purchase,
           disabled: false,
-          checked: Boolean(purchasePreKeyBy[purchase._id]?.checked)
+          checked: choosenPurchaseIdFromLocation === purchase._id || Boolean(purchasePreKeyBy[purchase._id]?.checked)
         })) || []
       );
     });
-  }, [purcharseInCart]);
+  }, [purcharseInCart, choosenPurchaseIdFromLocation]);
 
-  const isAllChecked = extendedPurchases.length > 0 && extendedPurchases.every((purchase) => purchase.checked);
-  const checkedPurchases = extendedPurchases.filter((purchase) => purchase.checked);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('destroy');
+  //     history.replaceState(null, '', location.pathname);
+  //   };
+  // }, []);
+
+  const isAllChecked = useMemo(
+    () => extendedPurchases.length > 0 && extendedPurchases.every((purchase) => purchase.checked),
+    [extendedPurchases]
+  );
+  const checkedPurchases = useMemo(() => extendedPurchases.filter((purchase) => purchase.checked), [extendedPurchases]);
+
   const checkedPurchasesCount = checkedPurchases.length;
-  const totalCheckedPurchasePrices = checkedPurchases.reduce(
-    (total, purchase) => total + purchase.product.price * purchase.buy_count,
-    0
+
+  const totalCheckedPurchasePrices = useMemo(
+    () => checkedPurchases.reduce((total, purchase) => total + purchase.product.price * purchase.buy_count, 0),
+    [checkedPurchases]
   );
 
-  const totalCheckedPurchaseSavingPrices = checkedPurchases.reduce(
-    (total, purchase) => total + (purchase.price_before_discount - purchase.product.price) * purchase.buy_count,
-    0
+  const totalCheckedPurchaseSavingPrices = useMemo(
+    () =>
+      checkedPurchases.reduce(
+        (total, purchase) => total + (purchase.price_before_discount - purchase.product.price) * purchase.buy_count,
+        0
+      ),
+    [checkedPurchases]
   );
 
   const updatePurcharMutation = useMutation({
@@ -294,7 +309,7 @@ export default function Cart() {
             </div>
             <Link
               to='/'
-              className='mt-[1.0625rem] cursor-pointer rounded-[2px] bg-orange px-[2.625rem] py-[.625rem] text-[.875rem] font-light uppercase leading-[1] text-white shadow-sm'
+              className='mt-[1.0625rem] cursor-pointer rounded-[2px] bg-orange px-[2.625rem] py-[.625rem] text-[.875rem] font-light uppercase leading-[1] text-white shadow-sm hover:bg-orange/90'
             >
               Mua Ngay
             </Link>
