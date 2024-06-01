@@ -39,7 +39,7 @@ export default function Cart() {
         })) || []
       );
     });
-  }, [purcharseInCart, choosenPurchaseIdFromLocation]);
+  }, [purcharseInCart, choosenPurchaseIdFromLocation, setExtendedPurchases]);
 
   // useEffect(() => {
   //   return () => {

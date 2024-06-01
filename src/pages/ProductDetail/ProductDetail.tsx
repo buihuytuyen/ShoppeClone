@@ -1,5 +1,5 @@
 import productApi from '@/apis/product.api';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductRating from '@/components/ProductRating';
 import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from '@/utils/utils';
@@ -9,7 +9,6 @@ import { ProductListConfig } from '@/types/product.type';
 import Product from '@/pages/ProductList/components/Product';
 import QuantityController from '@/components/QuantityController';
 import purchaseApi from '@/apis/purchase.api';
-import { queryClient } from '@/main';
 import { PurchasesStatus } from '@/constants/purchase';
 import { toast } from 'react-toastify';
 import UrlPath from '@/constants/path';
@@ -17,6 +16,7 @@ import UrlPath from '@/constants/path';
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState<number>(1);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleBuyCount = (value: number) => {
     setBuyCount(value);

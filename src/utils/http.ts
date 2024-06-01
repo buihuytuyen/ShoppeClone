@@ -58,6 +58,11 @@ class Http {
             autoClose: 2000
           });
         }
+
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          clearLS();
+        }
+
         return Promise.reject(error);
       }
     );
