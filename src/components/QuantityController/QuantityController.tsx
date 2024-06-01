@@ -4,11 +4,14 @@ import { ChangeEvent, useState } from 'react';
 
 interface QuantityControllerProps extends InputNumberProps {
   max?: number;
+  disableIncrease?: boolean;
+  disableDecrease?: boolean;
   initialValue?: number;
+  classNameWrapper?: string;
   onIncrease?: (value: number) => void;
   onDecrease?: (value: number) => void;
   onTyping?: (value: number) => void;
-  classNameWrapper?: string;
+  onFocusOut?: (value: number) => void;
 }
 
 export default function QuantityController({
@@ -16,9 +19,12 @@ export default function QuantityController({
   onIncrease,
   onDecrease,
   onTyping,
+  onFocusOut,
   value,
   initialValue = 1,
   classNameWrapper,
+  disableDecrease,
+  disableIncrease,
   ...rest
 }: QuantityControllerProps) {
   const [localValue, setLocalValue] = useState<number>(Number(value || initialValue));
@@ -62,11 +68,16 @@ export default function QuantityController({
     setLocalValue(_value);
   };
 
+  const handleFocusOut = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value));
+  };
+
   return (
     <div className={classNames('flex items-center', classNameWrapper)}>
       <button
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
         onClick={decrease}
+        disabled={disableDecrease}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -84,11 +95,13 @@ export default function QuantityController({
         onChange={handleChange}
         classNameError='hidden'
         classNameInput='h-8 !w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
+        onBlur={handleFocusOut}
         {...rest}
       />
       <button
         className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'
         onClick={increase}
+        disabled={disableIncrease}
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'

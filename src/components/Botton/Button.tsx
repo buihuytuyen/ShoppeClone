@@ -10,7 +10,7 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       className={classNames('flex w-full items-center justify-center', className, {
-        'cursor-not-allowed': disabled || isLoading
+        'cursor-not-allowed bg-red-500/60 hover:bg-red-500/60': disabled || isLoading
       })}
       disabled={disabled || isLoading}
       {...rest}

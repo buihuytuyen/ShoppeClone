@@ -197,7 +197,7 @@ export default function Header() {
               className='mr-6 flex cursor-pointer items-center py-1 hover:text-white/70'
               render={
                 <div className='max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-sm'>
-                  {purcharseInCart ? (
+                  {purcharseInCart && purcharseInCart.length > 0 ? (
                     <div className='p-2'>
                       <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
                       <div className='mt-5'>

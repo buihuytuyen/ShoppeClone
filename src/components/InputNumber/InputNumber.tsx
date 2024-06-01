@@ -31,6 +31,9 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
       setlocalValue(value);
     }
   };
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    event.target.select();
+  };
 
   return (
     <div className={className}>
@@ -43,6 +46,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function Inpu
         value={value || localValue}
         {...rest}
         onChange={handleChange}
+        onFocus={handleFocus}
         ref={ref}
       />
       <div className={classNames('mt-1 min-h-[1.25rem] text-sm text-red-600', classNameError)}>{errorMessage}</div>

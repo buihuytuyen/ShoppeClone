@@ -7,7 +7,7 @@ function App() {
   return (
     <div>
       {routeElements}
-      <ToastContainer />
+      <ToastContainer closeButton={false} />
     </div>
   );
 }
