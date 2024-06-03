@@ -1,3 +1,4 @@
+import Config from '@/constants/config';
 import UrlPath from '@/constants/path';
 import { AuthReponse } from '@/types/auth.type';
 import { User } from '@/types/user.type';
@@ -16,7 +17,7 @@ class Http {
     this.profile = getProfileFromLS();
 
     this.instance = axios.create({
-      baseURL: 'https://api-ecom.duthanhduoc.com',
+      baseURL: Config.BASE_API_URL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json'
@@ -52,7 +53,7 @@ class Http {
       (error: AxiosError) => {
         if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
           const data: any | undefined = error.response?.data;
-          const message = data.message || error.message;
+          const message = data?.message || error.message;
           toast.error(message, {
             position: 'bottom-right',
             autoClose: 2000

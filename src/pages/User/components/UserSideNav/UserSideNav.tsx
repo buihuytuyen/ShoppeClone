@@ -1,7 +1,11 @@
 import UrlPath from '@/constants/path';
+import { AppContext } from '@/contexts/app.context';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { getAvatarUrl } from '@/utils/utils';
 
 export default function UserSideNav() {
+  const { profile } = useContext(AppContext);
   return (
     <div>
       <div className='flex items-center border-b border-b-gray-200 py-4'>
@@ -9,14 +13,10 @@ export default function UserSideNav() {
           to={UrlPath.Profile}
           className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'
         >
-          <img
-            src='https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-1/404516795_2073979862985461_1550205334901129295_n.jpg?stp=dst-jpg_p200x200&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGGXGUM6KgZG6kmlGEL2-UZOED6s6nMS1w4QPqzqcxLXOxqLwIox4tGR2KdWC4lSZ-Yjg6lpvEAhk05nJcWc49k&_nc_ohc=l1KtSE6QTAwQ7kNvgHyDSNN&_nc_ht=scontent.fhan5-6.fna&oh=00_AYCkBadYKn8koZ-5MbSfC5LTcwtB-_WCJnW683JObjKkDw&oe=6660C792'
-            alt="User's avatar"
-            className='h-full w-full object-cover'
-          />
+          <img src={getAvatarUrl(profile?.avatar)} alt="User's avatar" className='h-full w-full object-cover' />
         </Link>
         <div className='flex-grow pl-4'>
-          <div className='mb-1 truncate font-semibold text-gray-600'>cdThanh</div>
+          <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.name}</div>
           <Link to={UrlPath.Profile} className='flex items-center capitalize text-gray-500'>
             <svg
               width={12}
@@ -48,11 +48,20 @@ export default function UserSideNav() {
         </Link>
         <Link to={UrlPath.ChangePassword} className='text-gray-60 mt-2 flex items-center capitalize transition-colors'>
           <div className='mr-3 h-[22px] w-[22px]'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/ba61750a46794d8847c3f463c5e71cc4'
-              className='h-full w-full'
-              alt='icon'
-            />
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='h-full w-full stroke-blue-700'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z'
+              />
+            </svg>
           </div>
           Đổi mật khẩu
         </Link>

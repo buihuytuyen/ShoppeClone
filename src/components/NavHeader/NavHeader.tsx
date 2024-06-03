@@ -3,6 +3,7 @@ import Popover from '@/components/Popover';
 import UrlPath from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { AppContext } from '@/contexts/app.context';
+import { getAvatarUrl } from '@/utils/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -85,11 +86,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-6 w-6 flex-shrink-0'>
-            <img
-              src='https://down-vn.img.susercontent.com/file/808b347857b9337ce7a4ba2165fcff96_tn'
-              alt='Avata'
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={getAvatarUrl(profile?.avatar)} alt='Avata' className='h-full w-full rounded-full object-cover' />
           </div>
           <div className='pr-4'>{profile?.name}</div>
         </Popover>

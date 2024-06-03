@@ -1,4 +1,6 @@
+import Config from '@/constants/config';
 import { AxiosError, HttpStatusCode, isAxiosError as isError } from 'axios';
+import avt from '@/assets/images/avt.jpg';
 
 export const isAxiosError = <Error>(error: unknown): error is AxiosError<Error> => isError(error);
 
@@ -34,3 +36,5 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-i.');
   return arr[arr.length - 1];
 };
+
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${Config.BASE_API_URL}/images/${avatarName}` : avt);

@@ -108,3 +108,16 @@ export const getRules = (getValues?: UseFormGetValues<RegisterShemaValidation>):
         : undefined
   }
 });
+
+export const userSchema = yup.object({
+  name: yup.string().max(160, 'Tên phải ngắn hơn 160 ký tự'),
+  phone: yup.string().max(20, 'Số điện thoại phải ngắn hơn 20 ký tự'),
+  address: yup.string().max(160, 'Địa chỉ phải ngắn hơn 160 ký tự'),
+  date_of_birth: yup.date().max(new Date(), 'Ngày sinh không hợp lệ'),
+  password: schemaValidation.fields.password,
+  new_password: schemaValidation.fields.password,
+  confirm_password: schemaValidation.fields.confirm_password,
+  avatar: yup.string().max(1000, 'Avatar phải ngắn hơn 1000 ký tự')
+});
+
+export type UserSchema = yup.InferType<typeof userSchema>;
