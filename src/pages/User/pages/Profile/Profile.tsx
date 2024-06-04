@@ -7,12 +7,13 @@ import { AppContext } from '@/contexts/app.context';
 import { userSchema, UserSchema } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { ChangeEvent, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { saveProfileToLS } from '@/utils/auth';
 import { getAvatarUrl, isAxiosUnprocessableEntity } from '@/utils/utils';
 import { ErrorReponse } from '@/types/utils.type';
+import InputFile from '@/components/InputFile/InputFile';
 
 type FormData = Pick<UserSchema, 'name' | 'date_of_birth' | 'address' | 'phone' | 'avatar'>;
 type FromDataError = Omit<FormData, 'date_of_birth'> & { date_of_birth: string };
@@ -20,11 +21,9 @@ type FromDataError = Omit<FormData, 'date_of_birth'> & { date_of_birth: string }
 const profileSchema = userSchema.pick(['name', 'date_of_birth', 'address', 'phone', 'avatar']);
 
 export default function Profile() {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [file, setFile] = useState<File>();
-  const previewImage = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file]);
 
+  const previewImage = useMemo(() => (file ? URL.createObjectURL(file) : ''), [file]);
   const {
     register,
     control,
@@ -105,15 +104,6 @@ export default function Profile() {
       }
     }
   });
-
-  const handleUpload = () => {
-    fileInputRef.current?.click();
-  };
-
-  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = event.target.files?.[0];
-    if (fileFromLocal) setFile(fileFromLocal);
-  };
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
@@ -209,14 +199,7 @@ export default function Profile() {
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <input className='hidden' type='file' accept='.jpg,.jpeg,.png' onChange={onFileChange} ref={fileInputRef} />
-            <button
-              type='button'
-              onClick={handleUpload}
-              className='flex h-10 items-center justify-end rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm hover:bg-black/20'
-            >
-              Chọn ảnh
-            </button>
+            <InputFile onChange={setFile} />
             <div className='mt-3 text-gray-400'>
               Dung lượng file tối đa 1MB <br />
               Định dạng:.JPEG, .PNG
