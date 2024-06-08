@@ -1,10 +1,11 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
 import CartLayout from '@/layouts/CartLayout';
 import MainLayout from '@/layouts/MainLayout';
 import RegisterLayout from '@/layouts/RegisterLayout';
 import Cart from '@/pages/Cart';
 import Login from '@/pages/Login';
+import NotFound from '@/pages/NotFound';
 import ProductDetail from '@/pages/ProductDetail';
 import ProductList from '@/pages/ProductList';
 import Register from '@/pages/Register';
@@ -17,12 +18,12 @@ import { Navigate, Outlet, useRoutes } from 'react-router-dom';
 
 const ProtectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext);
-  return isAuthenticated ? <Outlet /> : <Navigate to={UrlPath.Login} />;
+  return isAuthenticated ? <Outlet /> : <Navigate to={Routes.Login} />;
 };
 
 const RejectedRoute = () => {
   const { isAuthenticated } = useContext(AppContext);
-  return !isAuthenticated ? <Outlet /> : <Navigate to={UrlPath.Home} />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to={Routes.Home} />;
 };
 
 const useRouteElements = () => {
@@ -32,7 +33,7 @@ const useRouteElements = () => {
       element: <ProtectedRoute />,
       children: [
         {
-          path: UrlPath.Cart,
+          path: Routes.Cart,
           element: (
             <CartLayout>
               <Cart />
@@ -40,7 +41,7 @@ const useRouteElements = () => {
           )
         },
         {
-          path: UrlPath.User,
+          path: Routes.User,
           element: (
             <MainLayout>
               <UserLayout />
@@ -48,15 +49,15 @@ const useRouteElements = () => {
           ),
           children: [
             {
-              path: UrlPath.Profile,
+              path: Routes.Profile,
               element: <Profile />
             },
             {
-              path: UrlPath.ChangePassword,
+              path: Routes.ChangePassword,
               element: <ChangePassword />
             },
             {
-              path: UrlPath.HistoryPurchase,
+              path: Routes.HistoryPurchase,
               element: <HistoryPurchase />
             }
           ]
@@ -73,7 +74,7 @@ const useRouteElements = () => {
       )
     },
     {
-      path: UrlPath.ProductDetail,
+      path: Routes.ProductDetail,
       element: (
         <MainLayout>
           <ProductDetail />
@@ -85,7 +86,7 @@ const useRouteElements = () => {
       element: <RejectedRoute />,
       children: [
         {
-          path: UrlPath.Login,
+          path: Routes.Login,
           element: (
             <RegisterLayout>
               <Login />
@@ -93,7 +94,7 @@ const useRouteElements = () => {
           )
         },
         {
-          path: UrlPath.Register,
+          path: Routes.Register,
           element: (
             <RegisterLayout>
               <Register />
@@ -101,6 +102,14 @@ const useRouteElements = () => {
           )
         }
       ]
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <NotFound />
+        </MainLayout>
+      )
     }
   ]);
 

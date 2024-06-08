@@ -1,7 +1,7 @@
 import purchaseApi from '@/apis/purchase.api';
 import Button from '@/components/Botton';
 import QuantityController from '@/components/QuantityController';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { formatCurrency, generateNameId } from '@/utils/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useContext, useEffect, useMemo } from 'react';
 import { Purchase } from '@/types/purchase.type';
 import { produce } from 'immer';
-import { keyBy } from 'lodash';
+import keyBy from 'lodash/keyBy';
 import { toast } from 'react-toastify';
 import noProductInCart from '@/assets/images/no-product-in-cart.png';
 import { AppContext } from '@/contexts/app.context';
@@ -195,14 +195,14 @@ export default function Cart() {
                           <div className='ml-2 flex-grow'>
                             <div className='flex items-center'>
                               <Link
-                                to={`${UrlPath.Home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
+                                to={`${Routes.Home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
                                 className='h-20 w-20 flex-shrink-0 rounded-sm shadow-sm'
                               >
                                 <img src={purchase.product.image} alt={purchase.product.name} />
                               </Link>
                               <div className='flex-grow px-5 pb-2 pt-1'>
                                 <Link
-                                  to={`${UrlPath.Home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
+                                  to={`${Routes.Home}${generateNameId({ name: purchase.product.name, id: purchase.product._id })}`}
                                   className='line-clamp-2 text-left'
                                 >
                                   {purchase.product.name}

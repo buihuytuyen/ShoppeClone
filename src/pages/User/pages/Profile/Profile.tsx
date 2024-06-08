@@ -11,7 +11,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { saveProfileToLS } from '@/utils/auth';
-import { getAvatarUrl, isAxiosUnprocessableEntity } from '@/utils/utils';
+import { getAvatarUrl, isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { ErrorReponse } from '@/types/utils.type';
 import InputFile from '@/components/InputFile/InputFile';
 
@@ -91,7 +91,7 @@ export default function Profile() {
       refetch();
       toast.success(res.data.message, { position: 'top-center', autoClose: 2000 });
     } catch (error) {
-      if (isAxiosUnprocessableEntity<ErrorReponse<FromDataError>>(error)) {
+      if (isAxiosUnprocessableEntityError<ErrorReponse<FromDataError>>(error)) {
         const formErorr = error.response?.data.data;
         if (formErorr) {
           Object.entries(formErorr).forEach(([key, value]) => {

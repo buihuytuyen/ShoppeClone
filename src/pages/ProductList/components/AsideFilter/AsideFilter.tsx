@@ -1,6 +1,6 @@
 import Button from '@/components/Botton';
 import InputNumber from '@/components/InputNumber';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { QueryConfig } from '@/hooks/useQueryConfig';
 import RatingStars from '@/pages/RatingStars';
 import { Category } from '@/types/category.type';
@@ -8,7 +8,7 @@ import { NoUndefinedField } from '@/types/utils.type';
 import { FilterSchemaValidation, filterSchemaValidation } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { useForm, Controller } from 'react-hook-form';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import { ObjectSchema } from 'yup';
@@ -40,7 +40,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
 
   const onSubmit = handleSubmit((data) => {
     navigate({
-      pathname: UrlPath.Home,
+      pathname: Routes.Home,
       search: createSearchParams({
         ...queryConfig,
         price_min: data.price_min,
@@ -51,7 +51,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
 
   const handleRemoveAll = () => {
     navigate({
-      pathname: UrlPath.Home,
+      pathname: Routes.Home,
       search: createSearchParams(
         omit(
           {
@@ -66,7 +66,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
   return (
     <div className='py-4'>
       <Link
-        to={UrlPath.Home}
+        to={Routes.Home}
         className={classNames('flex items-center font-bold', {
           'font-semibold text-orange': !category
         })}
@@ -92,7 +92,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
           <li className='py-2 pl-2' key={item._id}>
             <Link
               to={{
-                pathname: UrlPath.Home,
+                pathname: Routes.Home,
                 search: createSearchParams({
                   ...queryConfig,
                   category: item._id
@@ -113,7 +113,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
         ))}
       </ul>
 
-      <Link to={UrlPath.Home} className='mt-4 flex items-center font-bold uppercase'>
+      <Link to={Routes.Home} className='mt-4 flex items-center font-bold uppercase'>
         <svg
           enableBackground='new 0 0 15 15'
           viewBox='0 0 15 15'

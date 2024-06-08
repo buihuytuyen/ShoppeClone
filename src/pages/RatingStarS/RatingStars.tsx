@@ -1,4 +1,4 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { QueryConfig } from '@/hooks/useQueryConfig';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export default function RatingStars({ queryConfig }: RatingStarsProps) {
 
   const handleFilterStars = (ratingFilter: number) => {
     navigate({
-      pathname: UrlPath.Home,
+      pathname: Routes.Home,
       search: createSearchParams({
         ...queryConfig,
         rating_filter: String(ratingFilter)

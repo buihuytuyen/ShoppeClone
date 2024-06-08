@@ -1,6 +1,6 @@
 import purchaseApi from '@/apis/purchase.api';
 import Popover from '@/components/Popover';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { AppContext } from '@/contexts/app.context';
 import { useQuery } from '@tanstack/react-query';
@@ -109,7 +109,7 @@ export default function Header() {
                           Thêm vào giỏ hàng
                         </div>
                         <Link
-                          to={UrlPath.Cart}
+                          to={Routes.Cart}
                           className='cursor-pointer rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'
                         >
                           Xem giỏ hàng

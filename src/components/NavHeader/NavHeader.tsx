@@ -1,6 +1,6 @@
 import authApi from '@/apis/auth.api';
 import Popover from '@/components/Popover';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { AppContext } from '@/contexts/app.context';
 import { getAvatarUrl } from '@/utils/utils';
@@ -68,12 +68,15 @@ export default function NavHeader() {
           render={
             <div className='rounded-sm border border-gray-200 bg-white shadow-sm'>
               <Link
-                to={UrlPath.Profile}
+                to={Routes.Profile}
                 className='block bg-white px-3 py-2 hover:bg-slate-100 hover:text-cyan-500 focus:outline-none'
               >
                 Tài khoản của tôi
               </Link>
-              <Link to='/' className='block bg-white px-3 py-2 hover:bg-slate-100 hover:text-cyan-500'>
+              <Link
+                to={Routes.HistoryPurchase}
+                className='block bg-white px-3 py-2 hover:bg-slate-100 hover:text-cyan-500'
+              >
                 Đơn mua
               </Link>
               <button
@@ -94,11 +97,11 @@ export default function NavHeader() {
 
       {!isAuthenticated && (
         <div className='flex items-center'>
-          <Link to={UrlPath.Register} className='mx-3 capitalize hover:text-white/70'>
+          <Link to={Routes.Register} className='mx-3 capitalize hover:text-white/70'>
             Đăng ký
           </Link>
           <div className='h-4 border-r-[1px] border-r-white/40'></div>
-          <Link to={UrlPath.Login} className='mx-3 capitalize hover:text-white/70'>
+          <Link to={Routes.Login} className='mx-3 capitalize hover:text-white/70'>
             Đăng nhập
           </Link>
         </div>

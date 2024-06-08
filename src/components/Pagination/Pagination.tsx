@@ -1,4 +1,4 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { QueryConfig } from '@/hooks/useQueryConfig';
 import classNames from 'classnames';
 import { createSearchParams, Link } from 'react-router-dom';
@@ -58,7 +58,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProps) {
         return (
           <Link
             to={{
-              pathname: `${UrlPath.Home}`,
+              pathname: `${Routes.Home}`,
               search: createSearchParams({
                 ...queryConfig,
                 page: pageNumber.toString()
@@ -82,7 +82,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProps) {
       ) : (
         <Link
           to={{
-            pathname: `${UrlPath.Home}`,
+            pathname: `${Routes.Home}`,
             search: createSearchParams({
               ...queryConfig,
               page: (page - 1).toString()
@@ -99,7 +99,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProps) {
       ) : (
         <Link
           to={{
-            pathname: `${UrlPath.Home}`,
+            pathname: `${Routes.Home}`,
             search: createSearchParams({
               ...queryConfig,
               page: (page + 1).toString()

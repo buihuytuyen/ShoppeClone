@@ -1,8 +1,8 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import useQueryConfig from '@/hooks/useQueryConfig';
 import { ProductSchemaValidation, productSchemaValidation } from '@/utils/rules';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { useForm } from 'react-hook-form';
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,7 @@ export default function useSearchProducts() {
         )
       : { ...queryConfig, name: data.name };
     navigate({
-      pathname: `${UrlPath.Home}`,
+      pathname: `${Routes.Home}`,
       search: createSearchParams(config).toString()
     });
   });

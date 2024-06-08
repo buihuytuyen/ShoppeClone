@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { range } from 'lodash';
+import range from 'lodash/range';
 import { useEffect, useState } from 'react';
 
 interface DateSelectProps {

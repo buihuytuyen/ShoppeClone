@@ -1,14 +1,14 @@
 import authApi from '@/apis/auth.api';
 import Button from '@/components/Botton';
 import Input from '@/components/Input';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
 import { ErrorReponse } from '@/types/utils.type';
 import { LoginShemaValidation, registerShemaValidation, RegisterShemaValidation } from '@/utils/rules';
-import { isAxiosUnprocessableEntity } from '@/utils/utils';
+import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -38,7 +38,7 @@ export default function Register() {
         navagate('/');
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ErrorReponse<LoginShemaValidation>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorReponse<LoginShemaValidation>>(error)) {
           const formErorr = error.response?.data.data;
           if (formErorr) {
             Object.entries(formErorr).forEach(([key, value]) => {
@@ -98,7 +98,7 @@ export default function Register() {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn đã có tài khoản?</span>
-                <Link to={UrlPath.Login} className='ml-1 text-red-500'>
+                <Link to={Routes.Login} className='ml-1 text-red-500'>
                   Đăng nhập
                 </Link>
               </div>

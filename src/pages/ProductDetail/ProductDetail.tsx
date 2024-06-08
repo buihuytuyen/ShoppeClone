@@ -11,7 +11,7 @@ import QuantityController from '@/components/QuantityController';
 import purchaseApi from '@/apis/purchase.api';
 import { PurchasesStatus } from '@/constants/purchase';
 import { toast } from 'react-toastify';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState<number>(1);
@@ -80,7 +80,7 @@ export default function ProductDetail() {
   const buyNow = async () => {
     const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount });
     const purchase = res.data.data;
-    navigate(UrlPath.Cart, { state: { purchaseId: purchase._id } });
+    navigate(Routes.Cart, { state: { purchaseId: purchase._id } });
   };
 
   const chooseActiveImage = (image: string) => {

@@ -1,9 +1,9 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { SortBy, Order } from '@/constants/product';
 import { QueryConfig } from '@/hooks/useQueryConfig';
 import { ProductListConfig } from '@/types/product.type';
 import classNames from 'classnames';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 
 interface SortProductListProps {
@@ -23,7 +23,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
 
   const handleSort = (sortByValue: Exclude<ProductListConfig['sort_by'], undefined>) => {
     navigate({
-      pathname: `${UrlPath.Home}`,
+      pathname: `${Routes.Home}`,
       search: createSearchParams(
         omit(
           {
@@ -38,7 +38,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
 
   const handlePriceOrder = (orderValue: Exclude<ProductListConfig['order'], undefined>) => {
     navigate({
-      pathname: `${UrlPath.Home}`,
+      pathname: `${Routes.Home}`,
       search: createSearchParams({
         ...queryConfig,
         sort_by: SortBy.Price,
@@ -120,7 +120,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
             ) : (
               <Link
                 to={{
-                  pathname: `${UrlPath.Home}`,
+                  pathname: `${Routes.Home}`,
                   search: createSearchParams({
                     ...queryConfig,
                     page: (page - 1).toString()
@@ -157,7 +157,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
             ) : (
               <Link
                 to={{
-                  pathname: `${UrlPath.Home}`,
+                  pathname: `${Routes.Home}`,
                   search: createSearchParams({
                     ...queryConfig,
                     page: (page + 1).toString()

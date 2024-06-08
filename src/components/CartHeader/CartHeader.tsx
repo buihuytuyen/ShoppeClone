@@ -1,5 +1,5 @@
 import NavHeader from '@/components/NavHeader';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import useSearchProducts from '@/hooks/useSearchProducts';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ export default function CartHeader() {
       <div className='bg-white py-6'>
         <div className='container'>
           <nav className='md:flex md:items-end md:justify-between'>
-            <Link to={UrlPath.Home} className='flex flex-shrink-0 items-end'>
+            <Link to={Routes.Home} className='flex flex-shrink-0 items-end'>
               <div>
                 <svg viewBox='0 0 192 65' className='h-8 fill-orange md:h-11'>
                   <g fillRule='evenodd'>

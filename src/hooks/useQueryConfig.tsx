@@ -1,6 +1,7 @@
 import useQueryParams from '@/hooks/useQueryParams';
 import { ProductListConfig } from '@/types/product.type';
-import { isUndefined, omitBy } from 'lodash';
+import omitBy from 'lodash/omitBy';
+import isUndefined from 'lodash/isUndefined';
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string;

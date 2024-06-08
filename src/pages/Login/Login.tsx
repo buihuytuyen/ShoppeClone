@@ -1,11 +1,11 @@
 import authApi from '@/apis/auth.api';
 import Button from '@/components/Botton';
 import Input from '@/components/Input';
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { AppContext } from '@/contexts/app.context';
 import { ErrorReponse } from '@/types/utils.type';
 import { loginShemaValidation, LoginShemaValidation } from '@/utils/rules';
-import { isAxiosUnprocessableEntity } from '@/utils/utils';
+import { isAxiosUnprocessableEntityError } from '@/utils/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
@@ -37,7 +37,7 @@ export default function Login() {
         navagate('/');
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ErrorReponse<LoginShemaValidation>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorReponse<LoginShemaValidation>>(error)) {
           const formErorr = error.response?.data.data;
           if (formErorr) {
             Object.entries(formErorr).forEach(([key, value]) => {
@@ -87,7 +87,7 @@ export default function Login() {
               </div>
               <div className='mt-8 flex items-center justify-center'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
-                <Link to={UrlPath.Register} className='ml-1 text-red-500'>
+                <Link to={Routes.Register} className='ml-1 text-red-500'>
                   Đăng ký
                 </Link>
               </div>

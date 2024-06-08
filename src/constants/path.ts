@@ -1,4 +1,4 @@
-const UrlPath = {
+const Routes = {
   Home: '/',
   Login: '/login',
   Register: '/register',
@@ -7,14 +7,9 @@ const UrlPath = {
   ChangePassword: '/user/password',
   HistoryPurchase: '/user/purchase',
   ProductDetail: ':nameId',
-  Product: '/products',
   Category: '/categories',
-  Purchase: '/purchases',
-  AddToCart: '/add-to-cart',
-  BuyProducts: '/buy-products',
-  UpdatePurchase: '/update-purchase',
   Cart: '/cart',
   User: '/user'
 } as const;
 
-export default UrlPath;
+export default Routes;

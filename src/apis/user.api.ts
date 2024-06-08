@@ -7,15 +7,19 @@ interface UpdateProfileBody extends Omit<User, '_id' | 'email' | 'roles' | 'crea
   newPassword?: string;
 }
 
+export const URL_ME = 'me';
+export const URL_USER = 'user';
+export const URL_UPLOAD_AVATAR = 'user/upload-avatar';
+
 const userApi = {
   getProfile() {
-    return http.get<SuccessReponse<User>>('me');
+    return http.get<SuccessReponse<User>>(URL_ME);
   },
   updateProfile(body: UpdateProfileBody) {
-    return http.put<SuccessReponse<User>>('user', body);
+    return http.put<SuccessReponse<User>>(URL_USER, body);
   },
   uploadAvatar(body: FormData) {
-    return http.post<SuccessReponse<string>>('user/upload-avatar', body, {
+    return http.post<SuccessReponse<string>>(URL_UPLOAD_AVATAR, body, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

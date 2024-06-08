@@ -1,8 +1,8 @@
-import UrlPath from '@/constants/path';
+import Routes from '@/constants/path';
 import { Link, useMatch } from 'react-router-dom';
 
 export default function RegisterHeader() {
-  const registerMatch = useMatch(UrlPath.Register);
+  const registerMatch = useMatch(Routes.Register);
   return (
     <header className='py-5'>
       <div className='container'>
