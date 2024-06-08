@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames';
 import omit from 'lodash/omit';
 import { useForm, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import { ObjectSchema } from 'yup';
 
@@ -21,6 +22,8 @@ interface AsideFilterProps {
 type FormData = NoUndefinedField<FilterSchemaValidation>;
 
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
+  const { t } = useTranslation('home');
+
   const { category } = queryConfig;
 
   const {
@@ -84,7 +87,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
             </g>
           </g>
         </svg>
-        Tất cả danh mục
+        {t('aside filter.all categories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
       <ul>
@@ -131,7 +134,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
             />
           </g>
         </svg>
-        BỘ LỌC TÌM KIẾM
+        {t('aside filter.filter search')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
 

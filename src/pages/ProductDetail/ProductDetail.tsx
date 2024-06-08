@@ -12,8 +12,10 @@ import purchaseApi from '@/apis/purchase.api';
 import { PurchasesStatus } from '@/constants/purchase';
 import { toast } from 'react-toastify';
 import Routes from '@/constants/path';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductDetail() {
+  const { t } = useTranslation('product');
   const [buyCount, setBuyCount] = useState<number>(1);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -239,7 +241,9 @@ export default function ProductDetail() {
                   classNameWrapper='ml-10'
                 />
 
-                <div className='ml-6 text-sm text-gray-500'>{product.quantity} Sản phẩm có sẵn</div>
+                <div className='ml-6 text-sm text-gray-500'>
+                  {product.quantity} {t('available')}
+                </div>
               </div>
 
               <div className='mt-8 flex items-center'>

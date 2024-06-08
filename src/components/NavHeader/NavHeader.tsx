@@ -3,12 +3,18 @@ import Popover from '@/components/Popover';
 import Routes from '@/constants/path';
 import { PurchasesStatus } from '@/constants/purchase';
 import { AppContext } from '@/contexts/app.context';
+import { Locale, locales } from '@/i18n/i18n';
 import { getAvatarUrl } from '@/utils/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export default function NavHeader() {
+  const { i18n } = useTranslation();
+
+  const currentLanguage = locales[i18n.language as Locale];
+
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext);
   const queryClient = useQueryClient();
 
@@ -25,14 +31,22 @@ export default function NavHeader() {
     logoutMutation.mutate();
   };
 
+  const handleChangeLanguage = (lng: Locale) => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div className='flex justify-end'>
       <Popover
         className='mr-6 flex cursor-pointer items-center py-1 hover:text-white/70'
         render={
           <div className='rounded-sm border border-gray-200 bg-white shadow-sm'>
-            <div className='cursor-pointer rounded-sm p-2 hover:text-orange'>Tiếng Việt</div>
-            <div className='cursor-pointer rounded-sm p-2 hover:text-orange'>Tiếng Anh</div>
+            <div className='cursor-pointer rounded-sm p-2 hover:text-orange' onClick={() => handleChangeLanguage('vi')}>
+              Tiếng Việt
+            </div>
+            <div className='cursor-pointer rounded-sm p-2 hover:text-orange' onClick={() => handleChangeLanguage('en')}>
+              English
+            </div>
           </div>
         }
       >
@@ -50,7 +64,7 @@ export default function NavHeader() {
             d='M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418'
           />
         </svg>
-        <span className='mx-1'>Tiếng Việt</span>
+        <span className='mx-1'>{currentLanguage}</span>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
